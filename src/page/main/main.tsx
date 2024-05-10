@@ -144,7 +144,7 @@ const SliderUl = styled.ul`
   margin: 0 auto;
   align-items: center;
   height: 100%;
-  width: 1200px;
+  width: 80%;
   display: flex;
   justify-content: space-evenly;
 `;
