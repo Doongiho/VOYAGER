@@ -9,8 +9,11 @@ const HeaderContainer = styled.header`
   display: flex;
   justify-content: center;
   border-bottom: 1px solid rgba(108, 108, 108, 0.57); 
-
+  position: fixed;
+  top: 0;
+  z-index: 10;
 `;
+
 
 const HeaderUl = styled.ul`
   list-style-type: none;
