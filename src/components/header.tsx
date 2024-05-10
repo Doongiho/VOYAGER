@@ -23,15 +23,14 @@ const HeaderUl = styled.ul`
 `;
 
 const HeaderLi = styled.li`
-margin: 0 25px;
-color: #fff;
+  margin: 0 25px;
+  color: #fff;
 `
 ;
 const HeaderH2 = styled.h2`
-margin: 0 25px;
-color: #fff;
-font-size: 1em;
-font-weight: 100;
+  margin: 0 25px;
+  color: #fff;
+  font-size: 1vw
 `;
 
 const HeaderLogo = styled.image`
