@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ImageKaKao from '../../assests/kakao.png';
 
@@ -8,129 +8,118 @@ const Login: React.FC = () => {
 
     const togglePasswordVisibility = () => {
         setShowPassword((prevState) => !prevState);
-      };
-      
+    };
 
-      
+
+
     return (
-      <div>
-        <LoginContainer>
-          <LoginDiv>
-            <LoginTitle>로그인</LoginTitle>
-            <LoginBox>
-                <Eamile>
-                    <EamileIcon className="material-symbols-outlined">mail</EamileIcon>
-                    <LoginEmail type="email" placeholder='이메일을 입력해주세요'></LoginEmail>
-                </Eamile>
-                <Password>
-                    <PasswordIcon className="material-symbols-outlined">lock</PasswordIcon>
-                    <Loginpassword type={showPassword ? "text" : "password"} placeholder='비밀번호를 입력해주세요'></Loginpassword>
-                    <LockIcon className="material-symbols-outlined" onClick={togglePasswordVisibility}>
-                            {showPassword ? 'visibility' : 'visibility_off'}
-                    </LockIcon>
-                </Password>
-                <SpanButton>
-                    <LoginButton>로그인하기</LoginButton>
-                    <SignUpButton>회원가입</SignUpButton>
-                </SpanButton>
-                <PasswordP>비밀번호 재설정</PasswordP>
-                <SpanSocial>
-                    <KakaoImage src={ImageKaKao} alt="Flash" />
-                    <SocialLogin>카카오톡으로 간편 로그인하기</SocialLogin>
-                </SpanSocial>
-            </LoginBox>
-            </LoginDiv>
-        </LoginContainer>
-      </div>
+        <div>
+            <LoginContainer>
+                <LoginDiv>
+                    <LoginTitle>로그인</LoginTitle>
+                    <LoginBox>
+                        <Div>
+                            <DivIcon>
+                                <Icon className="material-symbols-outlined">mail</Icon>
+                            </DivIcon>
+                            <Input type="email" placeholder="이메일을 입력해주세요." />
+                        </Div>
+                        <Div>
+                            <DivIcon>
+                                <Icon className="material-symbols-outlined">lock</Icon>
+                            </DivIcon>
+                            <Input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="영문자, 숫자 포함 8~20자."
+                            />
+                            <LockIcon className="material-symbols-outlined" onClick={togglePasswordVisibility}>
+                                {showPassword ? "visibility" : "visibility_off"}
+                            </LockIcon>
+                        </Div>
+                        <SpanButton>
+                            <Button>로그인하기</Button>
+                            <Button>회원가입</Button>
+                        </SpanButton>
+                        <PasswordP>비밀번호 재설정</PasswordP>
+                        <SpanSocial>
+                            <KakaoImage src={ImageKaKao} alt="Flash" />
+                            <SocialLogin>카카오톡으로 간편 로그인하기</SocialLogin>
+                        </SpanSocial>
+                    </LoginBox>
+                </LoginDiv>
+            </LoginContainer>
+        </div>
     );
-  };
-  
+};
+
 const LoginContainer = styled.div`
-    background-color: #202124;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align:center;
-    margin-top:60px;
+  background-color: #202124;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 `;
 const LoginDiv = styled.div`
-    background-color: #fff;
-    height: 70vh;
-    width: 32vw;
-    margin: 0 auto;
-    border-radius: 30px;
-        
+  background-color: #fff;
+  height: 100%;
+  width: 614px;
+  border-radius: .25rem;
+  margin:200px 0;
 `;
 const LoginBox = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: baseline;
   justify-content: center;
-  width:23vw;
-  margin:0 auto;
-  
+  width: 400px;
+  margin: 0 auto;
 `;
-
 const LoginTitle = styled.h1`
   margin:50px 0; 
-  font-size:2vw;
     
 `;
 
-
-const LoginEmail = styled.input`
-    width: 20vw;
-    height: 2.5vw;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #00000012;
-    background: #00000012;
-    color: #3b393973;
-    font-weight: bolder;
-    font-size: 1vw;
-    padding-left: 48px;
-    cursor: pointer;
+const Input = styled.input`
+  border: 1px solid #00000012;
+  background: #00000012;
+  color: #3b393973;
+  font-weight: bolder;
+  cursor: pointer;
+  box-shadow: 2px 2px 2px #b2b2b2;
+  width: 100%;
+  padding: 0.5rem 1.5rem 0.5rem 2.875rem;
+  line-height: 24px;
+  border-radius: .25rem;
 `;
-
-const Loginpassword = styled.input`
-    width: 20vw;
-    height: 2.5vw;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #00000012;
-    background: #00000012;
-    color: #3b393973;
-    font-weight: bolder;
-    font-size: 1vw;
-    padding-left: 48px;
-    cursor: pointer;
-`;
-
-const Eamile = styled.span`
-    position: relative;
-    
+const Div = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom:20px;
 }
 `;
-const Password = styled.span`
-    position: relative;
-    
-}
-`;
-
-const EamileIcon = styled.span`
-    font-size: 1.4vw;
+const DivIcon = styled.span`
     position: absolute;
-    top: 9px;
-    left: 14px;
-    color: #7c7c7c;
-    
+    left: 1.0625rem;
 }
 `;
+
+const Icon = styled.span`
+  font-size: 20px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #7c7c7c;
+}
+
+
+`;
+
 
 
 const LockIcon = styled.span`
-    font-size: 1.4vw;
     position: absolute;
     cursor: pointer;
     top: 9px;
@@ -140,46 +129,25 @@ const LockIcon = styled.span`
 }
 `;
 
-const PasswordIcon = styled.span`
-    font-size: 1.4vw;
-    position: absolute;
-    top: 9px;
-    left: 14px;
-    color: #7c7c7c;
-    }
-`;
 
-const SpanButton = styled.span`
+const SpanButton = styled.div`
     margin-top:20px;
     display:flex;
-    width:23vw;
+    width:100%;
     text-align:center;
     justify-content: space-between;
     cursor: pointer;
 `;
 
-const LoginButton = styled.button`
-    width: 11vw;
-    height: 2.4vw;
+const Button = styled.button`
+    width: 45%;
     border-radius: 10px;
     border: 1px solid #907AE7;
     background: #907AE7;
     color: #fff;
     font-weight: bold;
-    font-size:1vw;
     cursor: pointer;
-    
-`;
-const SignUpButton = styled.button`
-    width: 11vw;
-    height: 2.4vw;
-    border-radius: 10px;
-    border: 1px solid #907AE7;
-    background: #907AE7;
-    color: #fff;
-    font-weight: bold;
-    font-size:1vw;
-    cursor: pointer;
+    padding: 0.5rem 1.5rem 0.5rem;
     
 `;
 
@@ -188,42 +156,41 @@ const PasswordP = styled.p`
 
     color: #767676cf;
     align-self: end;
-    font-size:1vw;
     cursor: pointer;
+    font-size:12px;
 
 `;
 
 const SpanSocial = styled.span`
-    margin-top:30px;
     display:flex;
-    width:23vw;
+    width:100%;
     text-align:center;
     justify-content: space-between;
+    margin:20px 0;
 `;
 
 const KakaoImage = styled.img`
   display: block;
-  width: 3vw;
-  height:3vw;
-  border-radius: 10px;
+  border-radius: .25rem;
   cursor: pointer;
+  width:45px;
+  height:45px;
 }`;
 
 
 
 const SocialLogin = styled.button`
-    width: 18vw;
-    height: 2.5vw;
-    border-radius: 10px;
+    width: 70%;
+    border-radius: .25rem;
     margin-bottom: 20px;
     border: 1px solid #717171;
     background: #717171;
     color: #fff;
     font-weight: bolder;
-    margin-top:5px;
-    font-size: 1vw;
+    margin-top:8px;
     cursor: pointer;
-    
+    padding: 0.5rem 1.5rem 0.5rem;
+    margin-top:5px;
 `;
 
 
