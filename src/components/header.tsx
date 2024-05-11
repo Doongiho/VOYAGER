@@ -1,6 +1,44 @@
 import React from 'react';
 import styled from 'styled-components';
 import ImageLogo from '../assests/logo.png'
+import { Link } from 'react-router-dom';
+
+
+const Header: React.FC = () => {
+  return (
+    <HeaderContainer>
+      <Link to="/">
+       <LogoImage src={ImageLogo} alt="Logo" />
+      </Link>
+      <HeaderUl>
+        <HeaderLi>
+            <EnbUl>
+              <Link to="/login">
+                <HeaderH2>로그인</HeaderH2>
+              </Link>
+              <Link to="/signUp">
+                <HeaderH2>회원가입</HeaderH2>
+              </Link>
+            </EnbUl>
+            <GnbUl>
+            <Link to="/">
+              <HeaderH2>소개</HeaderH2>
+            </Link>
+            <Link to="/video">
+              <HeaderH2>동영상 구매</HeaderH2>
+            </Link>
+            <Link to="/videoSales">
+              <HeaderH2>동영상 판매</HeaderH2>
+            </Link>
+            <Link to="/service">
+              <HeaderH2>고객센터</HeaderH2>
+            </Link>
+            </GnbUl>
+          </HeaderLi>
+        </HeaderUl>
+    </HeaderContainer>
+  );
+};
 
 const HeaderContainer = styled.header`
   background-color: #202124;
@@ -52,28 +90,4 @@ const EnbUl = styled.ul`
 const LogoImage = styled.img`
   width: 100px;
 `;
-
-
-const Header: React.FC = () => {
-  return (
-    <HeaderContainer>
-    <LogoImage src={ImageLogo} alt="Logo" />
-     <HeaderUl>
-       <HeaderLi>
-          <EnbUl>
-            <HeaderH2>로그인</HeaderH2>
-            <HeaderH2>회원가입</HeaderH2>
-          </EnbUl>
-          <GnbUl>
-          <HeaderH2>소개</HeaderH2>
-          <HeaderH2>동영상 구매</HeaderH2>
-          <HeaderH2>동영상 판매</HeaderH2>
-          <HeaderH2>고객센터</HeaderH2>
-          </GnbUl>
-        </HeaderLi>
-      </HeaderUl>
-    </HeaderContainer>
-  );
-};
-
 export default Header;
