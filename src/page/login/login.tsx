@@ -53,53 +53,64 @@ const Login: React.FC = () => {
 };
 
 const LoginContainer = styled.div`
-  background-color: #202124;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+    background-color: #202124;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 `;
+
 const LoginDiv = styled.div`
-  background-color: #fff;
-  height: 100%;
-  width: 614px;
-  border-radius: .25rem;
-  margin:200px 0;
+    background-color: #fff;
+    height: 100%;
+    border-radius: 1rem;
+    margin: 200px 0;
+    padding: 1.5rem 2.5rem;
 `;
+
 const LoginBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: baseline;
-  justify-content: center;
-  width: 400px;
-  margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    justify-content: center;
+    width: 400px;
+    margin: 0 auto;
 `;
+
 const LoginTitle = styled.h1`
-  margin:50px 0; 
-    
+    font-size:27px;
+    font-weight:bolder;
+    margin-bottom: 2rem;
 `;
 
 const Input = styled.input`
-  border: 1px solid #00000012;
-  background: #00000012;
-  color: #3b393973;
-  font-weight: bolder;
-  cursor: pointer;
-  box-shadow: 2px 2px 2px #b2b2b2;
-  width: 100%;
-  padding: 0.5rem 1.5rem 0.5rem 2.875rem;
-  line-height: 24px;
-  border-radius: .25rem;
+    border: 1px solid #00000012;
+    background: #00000012;
+    color: #3b393973;
+    font-weight: bolder;
+    cursor: pointer;
+    box-shadow: 2px 2px 2px #b2b2b2;
+    width: 100%;
+    padding: 0.6rem 1.5rem 0.6rem 2.875rem;
+    line-height: 24px;
+    border-radius: 1rem;
+    font-size:17px;
+    &:focus {
+        outline: none;
+        border-color: #3b393973;
+    }
 `;
+
 const Div = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-bottom:20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom:20px;
 }
 `;
+
 const DivIcon = styled.span`
     position: absolute;
     left: 1.0625rem;
@@ -107,28 +118,22 @@ const DivIcon = styled.span`
 `;
 
 const Icon = styled.span`
-  font-size: 20px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #7c7c7c;
+    font-size: 22px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #7c7c7c;
 }
-
-
 `;
-
-
 
 const LockIcon = styled.span`
     position: absolute;
     cursor: pointer;
     top: 9px;
     right: 14px;
-    color: #7c7c7c;
-    
+    color: #7c7c7c;  
 }
 `;
-
 
 const SpanButton = styled.div`
     margin-top:20px;
@@ -140,25 +145,29 @@ const SpanButton = styled.div`
 `;
 
 const Button = styled.button`
-    width: 45%;
-    border-radius: 10px;
+    width: 48%;
+    border-radius: 1rem;
     border: 1px solid #907AE7;
     background: #907AE7;
     color: #fff;
-    font-weight: bold;
     cursor: pointer;
-    padding: 0.5rem 1.5rem 0.5rem;
-    
+    padding: calc(0.5rem - 3.2px);
+    font-weight: bolder;
+    font-size: 17px;
+    box-shadow: 2px 2px 2px #b2b2b2;
+    &:hover {
+        background-color: #8774d9;
+    }
 `;
 
 
 const PasswordP = styled.p`
-
     color: #767676cf;
     align-self: end;
     cursor: pointer;
-    font-size:12px;
-
+    font-size:13px;
+    font-weight:bold;
+    margin-right:0.3rem;
 `;
 
 const SpanSocial = styled.span`
@@ -166,22 +175,21 @@ const SpanSocial = styled.span`
     width:100%;
     text-align:center;
     justify-content: space-between;
-    margin:20px 0;
+    margin-top:20px;
 `;
 
 const KakaoImage = styled.img`
-  display: block;
-  border-radius: .25rem;
-  cursor: pointer;
-  width:45px;
-  height:45px;
+    display: block;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    width:58px;
+    height:55px;
+    margin-left:0.5rem;
 }`;
 
-
-
 const SocialLogin = styled.button`
-    width: 70%;
-    border-radius: .25rem;
+    width: 75%;
+    border-radius: 1rem;
     margin-bottom: 20px;
     border: 1px solid #717171;
     background: #717171;
@@ -189,16 +197,12 @@ const SocialLogin = styled.button`
     font-weight: bolder;
     margin-top:8px;
     cursor: pointer;
-    padding: 0.5rem 1.5rem 0.5rem;
-    margin-top:5px;
+    box-shadow: 2px 2px 2px #b2b2b2;
+    padding: 0.5rem;
+    font-size:15px;
+    &:hover {
+        background-color: #5a5858;
+    }
 `;
-
-
-
-
-
-
-
-
 
 export default Login;
