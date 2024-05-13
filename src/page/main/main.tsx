@@ -24,7 +24,7 @@ const Main: React.FC = () => {
   return (
     <MainContainer>
       <FirstContainer>
-        <StyledSlider {...settings}> 
+        <StyledSlider {...settings}>
           <SliderDiv>
             <SliderUl>
               <SliderLiLeft>
@@ -41,21 +41,21 @@ const Main: React.FC = () => {
           </SliderDiv>
           <SliderDiv>
             <SliderUl>
-                <SliderLiRight>
-                  <BlueBox></BlueBox>
-                  <ShoppingImage src={ImageCash} alt="cash" />
-                </SliderLiRight>
-                <SliderLiLeft>
+              <SliderLiRight>
+                <BlueBox></BlueBox>
+                <ShoppingImage src={ImageCash} alt="cash" />
+              </SliderLiRight>
+              <SliderLiLeft>
                 <SliderH1>영상 업로드 하고 <ColoredText>용돈 벌자!</ColoredText></SliderH1>
                 <SliderP>사진첩에 있는 동영상 가만히 두지 말고 <ColoredText></ColoredText> 보이저에 올리고 용돈 벌자 </SliderP>
-                </SliderLiLeft>
-              </SliderUl>
+              </SliderLiLeft>
+            </SliderUl>
           </SliderDiv>
           <SliderDiv>
             <SliderUl>
-             <SliderLiLeft>
-              <SliderH1><ColoredText>첫 구매 시</ColoredText>10% 할인 쿠폰 증정 </SliderH1>
-              <SliderP>첫 구매 한하여 10% 할인 쿠폰 증정<ColoredText></ColoredText> 다같이 알찬 쇼핑하자!</SliderP>
+              <SliderLiLeft>
+                <SliderH1><ColoredText>첫 구매 시</ColoredText>10% 할인 쿠폰 증정 </SliderH1>
+                <SliderP>첫 구매 한하여 10% 할인 쿠폰 증정<ColoredText></ColoredText> 다같이 알찬 쇼핑하자!</SliderP>
               </SliderLiLeft>
               <SliderLiRight>
                 <SkyblueBox></SkyblueBox>
@@ -111,13 +111,13 @@ const StyledSlider = styled(Slider)`
 
 const FirstContainer = styled.div`
     width:100%;
-    height:100vh;
+    height:100%;
 `;
 
 
 const MainContainer = styled.div`
   background-color: #202124;
-  height:100vh;
+  height:100%;
 `;
 
 
@@ -128,6 +128,9 @@ const SliderDiv = styled.div`
 
 const SliderP = styled.p`
   font-size: 1.2vw;
+  color:#c0bdbdcf;
+  cursor: pointer;
+  font-weight:bold;
 `;
 
 const SliderH1 = styled.h1`
