@@ -126,7 +126,7 @@ const SliderDiv = styled.div`
   height:100vh;
 `;
 
-const SliderP = styled.p`
+const SliderP = styled.h1`
   font-size: 1.2vw;
   color:#c0bdbdcf;
   cursor: pointer;
@@ -217,7 +217,7 @@ const FlashImage = styled.img`
   left: 0vw;
 }
 `;
-const ColoredText = styled.h1`
+const ColoredText = styled.p`
   font-size: 2.5vw;
   color: #8f7ce0;
   margin: 6px auto;
