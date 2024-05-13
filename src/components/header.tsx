@@ -8,19 +8,19 @@ const Header: React.FC = () => {
   return (
     <HeaderContainer>
       <Link to="/">
-       <LogoImage src={ImageLogo} alt="Logo" />
+        <LogoImage src={ImageLogo} alt="Logo" />
       </Link>
       <HeaderUl>
         <HeaderLi>
-            <EnbUl>
-              <Link to="/login">
-                <HeaderH2>로그인</HeaderH2>
-              </Link>
-              <Link to="/signUp">
-                <HeaderH2>회원가입</HeaderH2>
-              </Link>
-            </EnbUl>
-            <GnbUl>
+          <EnbUl>
+            <Link to="/login">
+              <HeaderH2>로그인</HeaderH2>
+            </Link>
+            <Link to="/signUp">
+              <HeaderH2>회원가입</HeaderH2>
+            </Link>
+          </EnbUl>
+          <GnbUl>
             <Link to="/">
               <HeaderH2>소개</HeaderH2>
             </Link>
@@ -33,9 +33,9 @@ const Header: React.FC = () => {
             <Link to="/service">
               <HeaderH2>고객센터</HeaderH2>
             </Link>
-            </GnbUl>
-          </HeaderLi>
-        </HeaderUl>
+          </GnbUl>
+        </HeaderLi>
+      </HeaderUl>
     </HeaderContainer>
   );
 };
@@ -64,15 +64,11 @@ const HeaderLi = styled.li`
   margin: 0 25px;
   color: #fff;
 `
-;
+  ;
 const HeaderH2 = styled.h2`
   margin: 0 25px;
   color: #fff;
-  font-size: 1vw
-`;
-
-const HeaderLogo = styled.image`
-  width:20%;
+  font-size: 15px
 `;
 
 const GnbUl = styled.ul`
@@ -88,6 +84,6 @@ const EnbUl = styled.ul`
 `;
 
 const LogoImage = styled.img`
-  width: 100px;
+  width: 20%;
 `;
 export default Header;
