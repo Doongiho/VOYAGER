@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import DaumPostcodeEmbed from 'react-daum-postcode';
+import ReactDOM from 'react-dom/client';
 
 const SignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordCheck, setShowPasswordCheck] = useState(false);
-
-  const togglePasswordVisibility = () => {
-    setShowPassword((prevState) => !prevState);
-  };
-  const togglePasswordCheckVisibility = () => {
-    setShowPasswordCheck((prevState) => !prevState);
-  };
   const [postcode, setPostcode] = useState('');
   const [address, setAddress] = useState('');
   const [detailAddress, setDetailAddress] = useState('');
   const [extraAddress, setExtraAddress] = useState('');
   const [showPostcode, setShowPostcode] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevState) => !prevState);
+  };
+
+  const togglePasswordCheckVisibility = () => {
+    setShowPasswordCheck((prevState) => !prevState);
+  };
 
   const handleComplete = (data: { zonecode: string; roadAddress: string; jibunAddress: string; userSelectedType: string; bname: string; buildingName: string }) => {
     let fullAddress = '';
@@ -47,6 +49,20 @@ const SignUp: React.FC = () => {
 
   const handleButtonClick = () => {
     setShowPostcode(true);
+
+    const popupWidth = 500;
+    const popupHeight = 600;
+    const left = window.screen.width / 2 - popupWidth / 2;
+    const top = window.screen.height / 2 - popupHeight / 2;
+    const popupOptions = `width=${popupWidth}, height=${popupHeight}, left=${left}, top=${top}, scrollbars=yes`;
+    const popupWindow = window.open('', 'DaumPostcodePopup', popupOptions);
+
+    if (popupWindow) {
+      popupWindow.document.write('<div id="root"></div>');
+      const root = ReactDOM.createRoot(popupWindow.document.getElementById('root')!);
+      root.render(<DaumPostcodeEmbed onComplete={handleComplete} />);
+    }
+
   };
 
   return (
@@ -65,12 +81,6 @@ const SignUp: React.FC = () => {
             </Div>
             <SignUpAddressP>주소</SignUpAddressP>
             <AddressDiv>
-
-              {showPostcode && (
-                <div>
-                  <DaumPostcodeEmbed onComplete={handleComplete} />
-                </div>
-              )}
               <AddressInput1
                 type="text"
                 id="sample6_postcode"
@@ -152,9 +162,9 @@ const SignUpContainer = styled.div`
 const SignUpDiv = styled.div`
   background-color: #fff;
   height: 100%;
-  width: 614px;
-  border-radius: 30px;
-  margin:200px 0;
+  border-radius: 1rem;
+  margin: 200px 0;
+  padding: 1.5rem 2.5rem;
 `;
 const SignUpBox = styled.div`
   display: flex;
@@ -166,7 +176,9 @@ const SignUpBox = styled.div`
 `;
 
 const SignUpTitle = styled.h1`
-  margin: 40px 0;
+  font-size:27px;
+  font-weight:bolder;
+  margin-bottom: 2rem;
 `;
 
 const Input = styled.input`
@@ -177,9 +189,14 @@ const Input = styled.input`
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
   width: 100%;
-  padding: 0.5rem 1.5rem 0.5rem 2.875rem;
+  padding: 0.6rem 1.5rem 0.6rem 2.875rem;
   line-height: 24px;
-  border-radius: .25rem;
+  border-radius: 1rem;
+  font-size:17px;
+  &:focus {
+      outline: none;
+      border-color: #3b393973;
+  }
 `;
 
 const Div = styled.div`
@@ -191,8 +208,8 @@ const Div = styled.div`
 }
 `;
 const DivIcon = styled.span`
-    position: absolute;
-    left: 1.0625rem;
+  position: absolute;
+  left: 1.0625rem;
 }
 `;
 
@@ -208,13 +225,11 @@ const Icon = styled.span`
 `;
 
 const LockIcon = styled.span`
-  right: 14px;
-  color: #7c7c7c;
-  font-size: 20px;
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #7c7c7c;
+  cursor: pointer;
+  top: 9px;
+  right: 14px;
+  color: #7c7c7c;  
 }
 `;
 
@@ -222,14 +237,19 @@ const LockIcon = styled.span`
 
 const SignUpButton = styled.button`
   width: 100%;
-  height: 2.4vw;
-  border-radius: 10px;
+ border-radius: 1rem;
   border: 1px solid #907AE7;
   background: #907AE7;
   color: #fff;
-  font-weight: bold;
   cursor: pointer;
-  margin:50px 0;
+  padding: 0.6rem;
+  font-weight: bolder;
+  font-size: 17px;
+  box-shadow: 2px 2px 2px #b2b2b2;
+  margin: 2rem 0;
+  &:hover {
+      background-color: #8774d9;
+  }
 `;
 
 const P = styled.p`
@@ -245,7 +265,7 @@ font-weight: bolder;
 
 
 const AddressButton = styled.button`
-  width: 38%;
+  width: 34%;
   border: 1px solid #b2b2b2;
   background: #F9F8F8;
   color: #000000e8;
@@ -253,23 +273,33 @@ const AddressButton = styled.button`
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
   line-height: 24px;
-  border-radius: .25rem;
+  border-radius: 1rem;
   margin-bottom:20px;
+  font-size:17px;
+  margin-right:6rem;
+  &:focus {
+        outline: none;
+        border-color: #3b393973;
+    }
 
 `;
 const AddressInput1 = styled.input`
-  width: 38%;
+  width: 29%;
   border: 1px solid #00000012;
   background: #00000012;
   color: #3b393973;
   font-weight: bolder;
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
-  padding: 0.5rem 1.5rem 0.5rem 1rem;
+  padding: 0.6rem;
   line-height: 24px;
-  border-radius: .25rem;
+  border-radius: 1rem;
+  font-size:17px;
   margin-bottom:20px;
-
+  &:focus {
+      outline: none;
+      border-color: #3b393973;
+  }
 `;
 const AddressInput2 = styled.input`
   width: 100%;
@@ -279,42 +309,58 @@ const AddressInput2 = styled.input`
   font-weight: bolder;
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
-  padding: 0.5rem 1.5rem 0.5rem 1rem;
+  padding: 0.6rem;
   line-height: 24px;
-  border-radius: .25rem;
+  border-radius: 1rem;
+  font-size:17px;
   margin-bottom:20px;
+  &:focus {
+      outline: none;
+      border-color: #3b393973;
+  }
 `;
+
 const AddressInput3 = styled.input`
-  width: 38%;
+  width: 30%;
   border: 1px solid #00000012;
   background: #00000012;
   color: #3b393973;
   font-weight: bolder;
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
-  padding: 0.5rem 1.5rem 0.5rem 1rem;
+  padding: 0.6rem;
   line-height: 24px;
-  border-radius: .25rem;
-  margin-bottom:20px;
+  border-radius: 1rem;
+  font-size:17px;
+  &:focus {
+      outline: none;
+      border-color: #3b393973;
+  }
 `;
+
 const AddressInput4 = styled.input`
-  width:38%;
+  width: 53%;
   border: 1px solid #00000012;
   background: #00000012;
   color: #3b393973;
   font-weight: bolder;
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
-  padding: 0.5rem 1.5rem 0.5rem 1rem;
+  padding: 0.6rem;
   line-height: 24px;
-  margin-bottom:20px;
-  border-radius: .25rem;
+  border-radius: 1rem;
+  font-size:17px;
+  &:focus {
+      outline: none;
+      border-color: #3b393973;
+  }
 `;
 
 const AddressDiv = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-bottom: 2rem;
 `;
 
 
