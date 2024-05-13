@@ -56,8 +56,8 @@ const HeaderContainer = styled.header`
 const HeaderUl = styled.ul`
   list-style-type: none;
   display:flex;
-  width:80%;
-  justify-content: end;
+  width:60%;
+  justify-content: center;
 `;
 
 const HeaderLi = styled.li`
@@ -68,7 +68,7 @@ const HeaderLi = styled.li`
 const HeaderH2 = styled.h2`
   margin: 0 25px;
   color: #fff;
-  font-size: 15px
+  font-size: 15px;
 `;
 
 const GnbUl = styled.ul`
