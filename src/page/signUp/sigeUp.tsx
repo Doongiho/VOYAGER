@@ -1,26 +1,53 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
-import DaumPostcodeEmbed from 'react-daum-postcode';
-import ReactDOM from 'react-dom/client';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import PostcodeModal from '../../components/modal/postCodeModal';
+
+
+interface IFormInput {
+  name: string;
+  username: string;
+  location1: string;
+  location2: string;
+  location3: string;
+  location4: string;
+  email: string;
+  password: string;
+  passwordConfirm: string;
+  isValid: boolean;
+}
 
 const SignUp: React.FC = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isValid }
+  } = useForm<IFormInput>();
+
+  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+
+  const password = useRef<string>();
+  password.current = watch("password");
+
   const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordCheck, setShowPasswordCheck] = useState(false);
-  const [postcode, setPostcode] = useState('');
-  const [address, setAddress] = useState('');
-  const [detailAddress, setDetailAddress] = useState('');
-  const [extraAddress, setExtraAddress] = useState('');
-  const [showPostcode, setShowPostcode] = useState(false);
+  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
+  const [showPostcodeModal, setShowPostcodeModal] = useState(false);
+
+  const togglePostcodeModal = () => {
+    setShowPostcodeModal((prevState) => !prevState);
+  };
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
   };
 
-  const togglePasswordCheckVisibility = () => {
-    setShowPasswordCheck((prevState) => !prevState);
+  const togglePasswordConfirmVisibility = () => {
+    setShowPasswordConfirm((prevState) => !prevState);
   };
 
-  const handleComplete = (data: { zonecode: string; roadAddress: string; jibunAddress: string; userSelectedType: string; bname: string; buildingName: string }) => {
+  const handleComplete = (data: any) => {
     let fullAddress = '';
     let extraAddress = '';
 
@@ -35,40 +62,27 @@ const SignUp: React.FC = () => {
         extraAddress += data.bname;
       }
       if (data.buildingName !== '') {
-        extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
       }
-      extraAddress = extraAddress !== '' ? ` (${extraAddress})` : '';
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
 
-    setPostcode(data.zonecode);
-    setAddress(fullAddress);
-    setExtraAddress(extraAddress);
-    setDetailAddress('');
-    setShowPostcode(false);
+    setValue('location1', data.zonecode);
+    setValue('location2', fullAddress);
+    setValue('location3', '');
+    setValue('location4', extraAddress);
+
+    togglePostcodeModal();
   };
 
   const handleButtonClick = () => {
-    setShowPostcode(true);
-
-    const popupWidth = 500;
-    const popupHeight = 600;
-    const left = window.screen.width / 2 - popupWidth / 2;
-    const top = window.screen.height / 2 - popupHeight / 2;
-    const popupOptions = `width=${popupWidth}, height=${popupHeight}, left=${left}, top=${top}, scrollbars=yes`;
-    const popupWindow = window.open('', 'DaumPostcodePopup', popupOptions);
-
-    if (popupWindow) {
-      popupWindow.document.write('<div id="root"></div>');
-      const root = ReactDOM.createRoot(popupWindow.document.getElementById('root')!);
-      root.render(<DaumPostcodeEmbed onComplete={handleComplete} />);
-    }
-
+    togglePostcodeModal();
   };
 
   return (
     <div>
       <SignUpContainer>
-        <SignUpDiv>
+        <SignUpDiv onSubmit={handleSubmit(onSubmit)}>
           <SignUpTitle>회원가입</SignUpTitle>
           <SignUpBox>
             <P>이름</P>
@@ -76,38 +90,62 @@ const SignUp: React.FC = () => {
               <DivIcon>
                 <Icon className="material-symbols-outlined">person</Icon>
               </DivIcon>
-              <Input type="text" placeholder="이름을 입력해주세요." />
-
+              <Input
+                type="text"
+                placeholder="이름을 입력해주세요."
+                id="name"
+                {...register("name", {
+                  required: true,
+                })}
+              />
+            </Div>
+            <P>닉네임</P>
+            <Div>
+              <DivIcon>
+                <Icon className="material-symbols-outlined">person</Icon>
+              </DivIcon>
+              <Input
+                type="text"
+                placeholder="닉네임을 입력해주세요."
+                id="username"
+                {...register("username", {
+                  required: true,
+                })}
+              />
             </Div>
             <SignUpAddressP>주소</SignUpAddressP>
             <AddressDiv>
+              <PostcodeModal
+                isOpen={showPostcodeModal}
+                onComplete={handleComplete}
+                onRequestClose={togglePostcodeModal}
+              />
               <AddressInput1
                 type="text"
                 id="sample6_postcode"
                 placeholder="우편번호"
-                value={postcode}
+                {...register("location1", { required: true })}
                 readOnly
               />
-              <AddressButton onClick={handleButtonClick}>우편번호 찾기</AddressButton>
+              <AddressButton type="button" onClick={handleButtonClick}>우편번호 찾기</AddressButton>
               <AddressInput2
                 type="text"
                 id="sample6_address"
                 placeholder="주소"
-                value={address}
+                {...register("location2", { required: true })}
                 readOnly
               />
               <AddressInput3
                 type="text"
                 id="sample6_detailAddress"
                 placeholder="상세주소"
-                value={detailAddress}
-                onChange={(e) => setDetailAddress(e.target.value)}
+                {...register("location3", { required: true })}
               />
               <AddressInput4
                 type="text"
                 id="sample6_extraAddress"
                 placeholder="참고항목"
-                value={extraAddress}
+                {...register("location4", { required: true })}
                 readOnly
               />
             </AddressDiv>
@@ -116,34 +154,107 @@ const SignUp: React.FC = () => {
               <DivIcon>
                 <Icon className="material-symbols-outlined">mail</Icon>
               </DivIcon>
-              <Input type="email" placeholder="이메일을 입력해주세요." />
+              <Input
+                placeholder="이메일을 입력해주세요."
+                id="email"
+                {...register("email", {
+                  required: true,
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: "이메일 형식에 맞게 써주세요."
+                  }
+                })}
+              />
             </Div>
+            {errors.email && (
+              <Div>
+                <DivError>
+                  <ErrorIcon className="material-symbols-outlined">error</ErrorIcon>
+                </DivError>
+                <ErrorP>
+                  {errors.email.type === "pattern"
+                    ? '이메일 형식에 맞게 써주세요.'
+                    : '이메일을 입력해주세요.'}
+                </ErrorP>
+              </Div>
+            )}
             <P>비밀번호</P>
-            <Div>
-              <DivIcon>
-                <Icon className="material-symbols-outlined">lock</Icon>
-              </DivIcon>
-              <Input
-                type={showPassword ? "text" : "password"}
-                placeholder="영문자, 숫자 포함 8~20자."
-              />
-              <LockIcon className="material-symbols-outlined" onClick={togglePasswordVisibility}>
-                {showPassword ? "visibility" : "visibility_off"}
-              </LockIcon>
-            </Div>
-            <Div>
-              <DivIcon>
-                <Icon className="material-symbols-outlined">lock</Icon>
-              </DivIcon>
-              <Input
-                type={showPasswordCheck ? "text" : "password"}
-                placeholder="비밀번호를 확인해 주세요."
-              />
-              <LockIcon className="material-symbols-outlined" onClick={togglePasswordCheckVisibility}>
-                {showPasswordCheck ? "visibility" : "visibility_off"}
-              </LockIcon>
-            </Div>
-            <SignUpButton>회원가입</SignUpButton>
+            <DivPass>
+              <Div>
+                <DivIcon>
+                  <Icon className="material-symbols-outlined">lock</Icon>
+                </DivIcon>
+                <Input
+                  {...register("password", {
+                    pattern: {
+                      value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
+                      message: '영문자, 숫자, 특수문자 포함 8 ~ 20자로 입력해주세요'
+                    },
+                    maxLength: 20,
+                    minLength: 8
+                  })}
+                  type={showPassword ? "text" : "password"}
+                  placeholder="영문자, 숫자, 특수문자 포함 8~20자."
+                  id="password"
+                />
+                <LockIcon className="material-symbols-outlined" onClick={togglePasswordVisibility}>
+                  {showPassword ? "visibility" : "visibility_off"}
+                </LockIcon>
+                <DivIcon>
+                  <Icon className="material-symbols-outlined">lock</Icon>
+                </DivIcon>
+              </Div>
+              {errors.password && (
+                <Div>
+                  <DivError>
+                    <ErrorIcon className="material-symbols-outlined">error</ErrorIcon>
+                  </DivError>
+                  <ErrorP>
+                    {errors.password.type === "pattern"
+                      ? '비밀번호는 영문자, 숫자, 특수문자를 모두 포함해야 합니다.'
+                      : '비밀번호의 길이가 8 ~ 20자가 되어야 합니다.'}
+                  </ErrorP>
+                </Div>
+              )}
+              <Div>
+                <DivIcon>
+                  <Icon className="material-symbols-outlined">lock</Icon>
+                </DivIcon>
+                <Input
+                  {...register("passwordConfirm", {
+                    required: { value: true, message: "비밀번호가 일치하지 않습니다." },
+                    validate: (value) => value === password.current,
+                  })}
+                  type={showPasswordConfirm ? "text" : "password"}
+                  placeholder="비밀번호를 확인해 주세요."
+                  id="passwordConfirm"
+                />
+                <LockIcon className="material-symbols-outlined" onClick={togglePasswordConfirmVisibility}>
+                  {showPasswordConfirm ? "visibility" : "visibility_off"}
+                </LockIcon>
+              </Div>
+
+              {errors?.passwordConfirm?.type === "required" && (
+                <Div>
+                  <DivError>
+                    <ErrorIcon className="material-symbols-outlined">error</ErrorIcon>
+                  </DivError>
+                  <ErrorP>{errors?.passwordConfirm?.message}</ErrorP>
+                </Div>
+              )}
+              {errors?.passwordConfirm?.type === "validate" && (
+                <Div>
+                  <DivError>
+                    <ErrorIcon className="material-symbols-outlined">error</ErrorIcon>
+                  </DivError>
+                  <ErrorP>비밀번호가 일치하지 않습니다.</ErrorP>
+                </Div>
+              )}
+            </DivPass>
+            <SignUpButton
+              type="submit"
+              isValid={isValid}
+            >회원가입</SignUpButton>
           </SignUpBox>
         </SignUpDiv>
       </SignUpContainer>
@@ -159,7 +270,7 @@ const SignUpContainer = styled.div`
   align-items: center;
   text-align: center;
 `;
-const SignUpDiv = styled.div`
+const SignUpDiv = styled.form`
   background-color: #fff;
   height: 100%;
   border-radius: 1rem;
@@ -180,31 +291,53 @@ const SignUpTitle = styled.h1`
   font-weight:bolder;
   margin-bottom: 2rem;
 `;
+const DivError = styled.span`
+  position: absolute;
+  left: 0.6rem;
+}
+`;
+const ErrorP = styled.div`
+  padding: 0rem 1rem 0rem 2.4rem;
+  color:#F90;
+  font-size:15px;
 
+`;
+const ErrorIcon = styled.div`
+  font-size: 21px;
+  position: absolute;
+  transform: translateY(-50%);
+  color: #F90;
+
+
+`;
 const Input = styled.input`
   border: 1px solid #00000012;
   background: #00000012;
-  color: #3b393973;
-  font-weight: bolder;
+  color: #555656;
+  font-weight: bold;
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
   width: 100%;
-  padding: 0.6rem 1.5rem 0.6rem 2.875rem;
-  line-height: 24px;
+  padding: 0.7rem 1.5rem 0.6rem 2.875rem;
   border-radius: 1rem;
-  font-size:17px;
+  font-size: 15px;
   &:focus {
-      outline: none;
-      border-color: #3b393973;
+    outline: none;
+    border-color: #3b393973;
+    color: #3b393973;
   }
 `;
-
 const Div = styled.div`
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
   margin-bottom:20px;
+  text-align: left;
+}
+`;
+const DivPass = styled.div`
+  width: 100%;
 }
 `;
 const DivIcon = styled.span`
@@ -214,14 +347,12 @@ const DivIcon = styled.span`
 `;
 
 const Icon = styled.span`
-  font-size: 20px;
+  font-size: 23px;
   position: absolute;
-  top: 50%;
   transform: translateY(-50%);
   color: #7c7c7c;
+
 }
-
-
 `;
 
 const LockIcon = styled.span`
@@ -233,28 +364,33 @@ const LockIcon = styled.span`
 }
 `;
 
-
-
-const SignUpButton = styled.button`
+const SignUpButton = styled.button<{ isValid: boolean }>`
   width: 100%;
- border-radius: 1rem;
-  border: 1px solid #907AE7;
-  background: #907AE7;
-  color: #fff;
-  cursor: pointer;
+  border-radius: 1rem;
+  border: none;
+ background-color: ${props => props.isValid ? '#907AE7' : '#00000012'};
+  color: ${props => props.isValid ? '#FFF' : '#555656'};
   padding: 0.6rem;
   font-weight: bolder;
   font-size: 17px;
   box-shadow: 2px 2px 2px #b2b2b2;
   margin: 2rem 0;
+  font-size: 15px;
+  font-weight: bold;
+   cursor: pointer;
   &:hover {
-      background-color: #8774d9;
+    cursor: url(cursor.png) 20 30, url(cursor.png) 20 30, auto;
   }
 `;
+
+
+
+
 
 const P = styled.p`
 color: #000000ed;
 font-weight: bolder;
+font-size:17px;
 `;
 
 
@@ -268,53 +404,55 @@ const AddressButton = styled.button`
   width: 34%;
   border: 1px solid #b2b2b2;
   background: #F9F8F8;
-  color: #000000e8;
-  font-weight: bolder;
+  color: #7c7c7c;
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
-  line-height: 24px;
   border-radius: 1rem;
   margin-bottom:20px;
-  font-size:17px;
+  font-size:15px;
   margin-right:6rem;
+  font-size:15px;
+  font-weight:bold;
   &:focus {
-        outline: none;
-        border-color: #3b393973;
-    }
-
+      outline: none;
+      border-color: #3b393973;
+  }
 `;
 const AddressInput1 = styled.input`
   width: 29%;
   border: 1px solid #00000012;
   background: #00000012;
   color: #3b393973;
-  font-weight: bolder;
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
   padding: 0.6rem;
-  line-height: 24px;
   border-radius: 1rem;
-  font-size:17px;
+  font-size:15px;
   margin-bottom:20px;
-  &:focus {
+  font-size:15px;
+  font-weight:bold;
+   &:focus {
       outline: none;
       border-color: #3b393973;
   }
+
 `;
+
+
 const AddressInput2 = styled.input`
   width: 100%;
   border: 1px solid #00000012;
   background: #00000012;
   color: #3b393973;
-  font-weight: bolder;
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
   padding: 0.6rem;
-  line-height: 24px;
   border-radius: 1rem;
-  font-size:17px;
+  font-size:15px;
   margin-bottom:20px;
-  &:focus {
+  font-size:15px;
+  font-weight:bold;
+   &:focus {
       outline: none;
       border-color: #3b393973;
   }
@@ -325,17 +463,18 @@ const AddressInput3 = styled.input`
   border: 1px solid #00000012;
   background: #00000012;
   color: #3b393973;
-  font-weight: bolder;
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
   padding: 0.6rem;
-  line-height: 24px;
   border-radius: 1rem;
-  font-size:17px;
+  font-size:15px;
+  font-size:15px;
+  font-weight:bold;
   &:focus {
       outline: none;
       border-color: #3b393973;
   }
+ 
 `;
 
 const AddressInput4 = styled.input`
@@ -343,17 +482,18 @@ const AddressInput4 = styled.input`
   border: 1px solid #00000012;
   background: #00000012;
   color: #3b393973;
-  font-weight: bolder;
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
   padding: 0.6rem;
-  line-height: 24px;
   border-radius: 1rem;
-  font-size:17px;
-  &:focus {
+  font-size:15px;
+  font-size:15px;
+  font-weight:bold;
+   &:focus {
       outline: none;
       border-color: #3b393973;
   }
+  
 `;
 
 const AddressDiv = styled.div`

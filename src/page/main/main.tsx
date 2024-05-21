@@ -9,7 +9,6 @@ import ImageStar from '../../assests/star.png';
 import ImageCash from '../../assests/cash.png';
 import ImageCard from '../../assests/card.png';
 
-
 const Main: React.FC = () => {
 
   const settings = {
