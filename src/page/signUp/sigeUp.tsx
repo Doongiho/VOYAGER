@@ -2,7 +2,15 @@ import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import PostcodeModal from '../../components/modal/postCodeModal';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
+const instance = axios.create({
+  baseURL: 'http://localhost:7777',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
 
 interface IFormInput {
   name: string;
@@ -26,7 +34,19 @@ const SignUp: React.FC = () => {
     formState: { errors, isValid }
   } = useForm<IFormInput>();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    console.log(data);
+    instance.post('/join', data)
+      .then((response) => {
+        console.log(response.data);
+        navigate('/');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   const password = useRef<string>();
   password.current = watch("password");
