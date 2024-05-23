@@ -1,7 +1,19 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ImageKaKao from '../../assests/kakao.png';
+import ImageGithub from '../../assests/github-6980894_640.png';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
+
+const instance = axios.create({
+    baseURL: 'http://localhost:7777',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
+
 
 interface IFormInput {
     email: string;
@@ -17,8 +29,18 @@ const Login: React.FC = () => {
         formState: { isValid }
     } = useForm<IFormInput>();
 
-    const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    const navigate = useNavigate();
+
+    const onSubmit: SubmitHandler<IFormInput> = async (data) => {
         console.log(data);
+        instance.post('/login', data)
+            .then((response) => {
+                console.log(response.data);
+                navigate('/');
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     };
     const [showPassword, setShowPassword] = useState(false);
 
@@ -71,17 +93,21 @@ const Login: React.FC = () => {
                                 isValid={isValid}>
                                 로그인하기
                             </LoginButton>
-                            <Button>회원가입</Button>
+                            <Button><Link to="/signUp" style={{
+                                textDecorationLine: 'none', color: '#fff',
+                                fontWeight: 'bold',
+                                fontSize: '17px'
+                            }}>회원가입</Link></Button>
                         </SpanButton>
                         <PasswordP>비밀번호 재설정</PasswordP>
                         <SpanSocial>
-                            <KakaoImage src={ImageKaKao} alt="Flash" />
-                            <SocialLogin>카카오톡으로 간편 로그인하기</SocialLogin>
+                            <GitHubImage src={ImageGithub} alt="Flash" />
+                            <SocialLogin>깃허브로 간편 로그인하기</SocialLogin>
                         </SpanSocial>
                     </LoginBox>
                 </LoginDiv>
             </LoginContainer>
-        </div>
+        </div >
     );
 };
 
@@ -182,11 +208,8 @@ const Button = styled.button`
     border-radius: 1rem;
     border: 1px solid #907AE7;
     background: #907AE7;
-    color: #fff;
     cursor: pointer;
     padding: calc(0.5rem - 3.2px);
-    font-weight: bolder;
-    font-size: 17px;
     box-shadow: 2px 2px 2px #b2b2b2;
     &:hover {
         background-color: #8774d9;
@@ -226,7 +249,7 @@ const SpanSocial = styled.span`
     margin-top:20px;
 `;
 
-const KakaoImage = styled.img`
+const GitHubImage = styled.img`
     display: block;
     border-radius: 0.5rem;
     cursor: pointer;

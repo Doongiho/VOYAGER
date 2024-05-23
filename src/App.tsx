@@ -6,7 +6,7 @@ import Footer from './components/footer';
 import Video from './page/video/video';
 import VideoSales from './page/videoSales/videoSales';
 import Service from './page/service/service';
-import SignUp from './page/signUp/sigeUp';
+import SignUp from './page/signUp/signUp';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
