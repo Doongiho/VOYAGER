@@ -1,9 +1,25 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ImageKaKao from '../../assests/kakao.png';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
+interface IFormInput {
+    email: string;
+    password: string;
+    isValid: boolean;
+}
+
 
 const Login: React.FC = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { isValid }
+    } = useForm<IFormInput>();
 
+    const onSubmit: SubmitHandler<IFormInput> = (data) => {
+        console.log(data);
+    };
     const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
@@ -11,33 +27,50 @@ const Login: React.FC = () => {
     };
 
 
-
     return (
         <div>
             <LoginContainer>
-                <LoginDiv>
+                <LoginDiv onSubmit={handleSubmit(onSubmit)}>
                     <LoginTitle>로그인</LoginTitle>
                     <LoginBox>
                         <Div>
                             <DivIcon>
                                 <Icon className="material-symbols-outlined">mail</Icon>
                             </DivIcon>
-                            <Input type="email" placeholder="이메일을 입력해주세요." />
+                            <Input
+                                type="text"
+                                placeholder="이메일을 입력해주세요."
+                                id="email"
+                                {...register("email", {
+                                    required: true,
+                                })}
+                            />
                         </Div>
                         <Div>
                             <DivIcon>
                                 <Icon className="material-symbols-outlined">lock</Icon>
                             </DivIcon>
                             <Input
+                                {...register("password", {
+                                    required: true,
+                                })}
                                 type={showPassword ? "text" : "password"}
-                                placeholder="영문자, 숫자 포함 8~20자."
+                                placeholder="영문자, 숫자, 특수문자 포함 8~20자."
+                                id="password"
                             />
                             <LockIcon className="material-symbols-outlined" onClick={togglePasswordVisibility}>
                                 {showPassword ? "visibility" : "visibility_off"}
                             </LockIcon>
+                            <DivIcon>
+                                <Icon className="material-symbols-outlined">lock</Icon>
+                            </DivIcon>
                         </Div>
                         <SpanButton>
-                            <Button>로그인하기</Button>
+                            <LoginButton
+                                type="submit"
+                                isValid={isValid}>
+                                로그인하기
+                            </LoginButton>
                             <Button>회원가입</Button>
                         </SpanButton>
                         <PasswordP>비밀번호 재설정</PasswordP>
@@ -61,7 +94,7 @@ const LoginContainer = styled.div`
     text-align: center;
 `;
 
-const LoginDiv = styled.div`
+const LoginDiv = styled.form`
     background-color: #fff;
     height: 100%;
     border-radius: 1rem;
@@ -158,6 +191,21 @@ const Button = styled.button`
     &:hover {
         background-color: #8774d9;
     }
+`;
+const LoginButton = styled.button<{ isValid: boolean }>`
+  width: 48%;
+    border-radius: 1rem;
+    border: none;
+    background: #907AE7;
+    color: #fff;
+    padding: calc(0.5rem - 3.2px);
+    font-weight: bolder;
+    font-size: 17px;
+    box-shadow: 2px 2px 2px #b2b2b2;
+    background-color: ${props => props.isValid ? '#907AE7' : '#00000012'};
+    color: ${props => props.isValid ? '#FFF' : '#555656'};
+    cursor: ${props => props.isValid ? 'pointer' : 'no-drop'};
+    
 `;
 
 
