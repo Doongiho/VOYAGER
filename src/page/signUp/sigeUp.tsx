@@ -397,10 +397,8 @@ const SignUpButton = styled.button<{ isValid: boolean }>`
   margin: 2rem 0;
   font-size: 15px;
   font-weight: bold;
-   cursor: pointer;
-  &:hover {
-    cursor: url(cursor.png) 20 30, url(cursor.png) 20 30, auto;
-  }
+  cursor: ${props => props.isValid ? 'pointer' : 'no-drop'};
+    
 `;
 
 
