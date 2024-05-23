@@ -12,22 +12,40 @@ const Service: React.FC = () => {
                 <ServiceTitle>무엇을 도와드릴까요?</ServiceTitle>
                 <ServiceUl>
                   <ServiceLi>
-                    <ServiceText>계정 관리</ServiceText>
+                    <ServiceText>계정 관리
+                         <Icon className="material-symbols-outlined">person</Icon>
+                    </ServiceText>
+                    <ServicDes>회원 탈퇴를 하고 싶어요.</ServicDes>
                   </ServiceLi>
                   <ServiceLi>
-                    <ServiceText>계정 관리</ServiceText>
+                    <ServiceText>계정 관리
+                    <Icon className="material-symbols-outlined">person</Icon>
+                    </ServiceText>
+                    <ServicDes>회원 수정을 하고 싶어요.</ServicDes>
                   </ServiceLi>
                     <ServiceLi>
-                  <ServiceText>동영상 구매</ServiceText>
+                  <ServiceText>동영상 구매
+                  <Icon className="material-symbols-outlined">play_arrow</Icon>
+                  </ServiceText>
+                  <ServicDes>동영상을 구매하고 싶어요.</ServicDes>
                   </ServiceLi>
                    <ServiceLi>
-                  <ServiceText>동영상 판매</ServiceText>
+                  <ServiceText>동영상 판매
+                  <Icon className="material-symbols-outlined">play_arrow</Icon>
+                  </ServiceText>
+                  <ServicDes>동영상 업로드는 어떻게 하나요?</ServicDes>
                   </ServiceLi>
                   <ServiceLi>
-                  <ServiceText>수익 창출</ServiceText>
+                  <ServiceText>수익 창출
+                  <Icon className="material-symbols-outlined">payments</Icon>
+                  </ServiceText>
+                  <ServicDes>수익은 어떻게 이루어지나요?</ServicDes>
                   </ServiceLi>
                   <ServiceLi>
-                  <ServiceText>결제 방식</ServiceText>
+                  <ServiceText>결제 방식
+                  <Icon className="material-symbols-outlined">payments</Icon>
+                  </ServiceText>
+                  <ServicDes>결제는 어떻게 하나요?</ServicDes>
                   </ServiceLi>
 
           
@@ -78,20 +96,39 @@ border-radius: 1rem;
 box-shadow: 2px 2px 2px #b2b2b2;
 `;
 const ServiceText = styled.h1`
-font-size:24px;
+font-size:22px;
 font-weight:bolder;
-margin-bottom: 2rem;
+margin: 2rem;
+text-align: left;
+color: 000000
+`;
+const ServicDes = styled.h1`
+font-size:17px;
+margin: 2rem;
+text-align: left;
+color: #3B3939;
+letter-spacing: -1px;
 `;
 
+const Icon = styled.span`
+  font-size: 30px;
+  position: absolute;
+  margin: 0.5rem;
+  transform: translateY(-28%); 
+  color: #7c7c7c;
+  `
 
-const ServiceBox = styled.div`
 
-`;
+
+const ServiceBox = styled.div``
+
+;
 
 const ServiceTitle = styled.h1`
     font-size:30px;
     font-weight:bolder;
     margin-bottom: 2rem;
+    color: 1F1F1F
 `;
 
 
