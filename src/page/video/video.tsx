@@ -133,7 +133,7 @@ const Videos = styled.div`
 const Videoss = styled.div`
   display:flex;
   flex-direction: column;
-  width: 70%;
+  width: 80%;
   text-align: left;
   justify-content: space-between;
   margin: 0 auto;
