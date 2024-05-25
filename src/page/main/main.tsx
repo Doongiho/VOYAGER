@@ -6,8 +6,6 @@ import "slick-carousel/slick/slick-theme.css";
 import ImageShopping from '../../assests/shopping.png';
 import ImageFlash from '../../assests/Flash.png';
 import ImageStar from '../../assests/star.png';
-import ImageCash from '../../assests/cash.png';
-import ImageCard from '../../assests/card.png';
 import ImageBulb from '../../assests/bulb.png'
 import ImageSecurity from '../../assests/security.png'
 import Imagevideo from '../../assests/video.png'
