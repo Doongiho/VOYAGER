@@ -8,6 +8,9 @@ import ImageFlash from '../../assests/Flash.png';
 import ImageStar from '../../assests/star.png';
 import ImageCash from '../../assests/cash.png';
 import ImageCard from '../../assests/card.png';
+import ImageBulb from '../../assests/bulb.png'
+import ImageSecurity from '../../assests/security.png'
+import Imagevideo from '../../assests/video.png'
 
 const Main: React.FC = () => {
 
@@ -42,28 +45,54 @@ const Main: React.FC = () => {
             <SliderUl>
               <SliderLiRight>
                 <BlueBox></BlueBox>
-                <ShoppingImage src={ImageCash} alt="cash" />
+                <ShoppingImage src={Imagevideo} alt="video" />
               </SliderLiRight>
               <SliderLiLeft>
-                <SliderH1>영상 업로드 하고 <ColoredText>용돈 벌자!</ColoredText></SliderH1>
-                <SliderP>사진첩에 있는 동영상 가만히 두지 말고 <ColoredText></ColoredText> 보이저에 올리고 용돈 벌자 </SliderP>
+                <SliderH1>고객님의 재능을 세상에<ColoredText> 알리는 기회</ColoredText></SliderH1>
+                <SliderP>당신의 창의력이 빛나는 영상을 공유해주세요!</SliderP>
               </SliderLiLeft>
             </SliderUl>
           </SliderDiv>
           <SliderDiv>
             <SliderUl>
               <SliderLiLeft>
-                <SliderH1><ColoredText>첫 구매 시</ColoredText>10% 할인 쿠폰 증정 </SliderH1>
-                <SliderP>첫 구매 한하여 10% 할인 쿠폰 증정<ColoredText></ColoredText> 다같이 알찬 쇼핑하자!</SliderP>
+                <SliderH1><ColoredText>워터마크가 들어간 안전한</ColoredText>영상거래사이트</SliderH1>
+                <SliderP>보이저는 영상 거래의 안전을 위해 워터마크를 삽입하여<ColoredText></ColoredText> 안전한 거래를 보장합니다!</SliderP>
               </SliderLiLeft>
               <SliderLiRight>
                 <SkyblueBox></SkyblueBox>
-                <ShoppingImage src={ImageCard} alt="card" />
+                <ShoppingImage src={ImageSecurity} alt="security" />
               </SliderLiRight>
             </SliderUl>
           </SliderDiv>
         </StyledSlider>
       </FirstContainer>
+      <SliderDivW>
+        <SliderUl>
+          <SliderLiRight>
+            <BlueBox></BlueBox>
+            <ShoppingImage src={ImageBulb} alt="bulb" />
+          </SliderLiRight>
+          <SliderLiLeft>
+            <SliderH1w>창작자의 열정과<ColoredText> 독창성을 존중합니다</ColoredText></SliderH1w>
+            <SliderPw>퀄리티에 구애받지 않는 자유로운 업로드 환경을 제공합니다. 아마추어에서부터 전문가에 이르기까지, 모든 수준의 창작자들이 자신의 작품을 세상과 나누고, 가치를 인정받을 수 있는 공간입니다.</SliderPw>
+          </SliderLiLeft>
+        </SliderUl>
+      </SliderDivW>
+      <SliderDivG>
+        <SliderUl>
+          <SliderLiLeft>
+            <SliderH1w><ColoredText>영상 업로드 하고
+            </ColoredText>용돈 벌자!</SliderH1w>
+            <SliderPw>사진첩에 있는 동영상 가만히 두지말고<ColoredText></ColoredText>
+              보이저에 올리고 용돈 벌자</SliderPw>
+          </SliderLiLeft>
+          <SliderLiRight>
+            <SkyblueBox></SkyblueBox>
+            <ShoppingImage src={ImageSecurity} alt="security" />
+          </SliderLiRight>
+        </SliderUl>
+      </SliderDivG>
     </MainContainer>
   );
 };
@@ -120,8 +149,20 @@ const MainContainer = styled.div`
 `;
 
 
+
 const SliderDiv = styled.div`
   background-color: #202124;
+  height:100vh;
+`;
+
+const SliderDivW = styled.div`
+  background-color: #fff;
+  height:100vh;
+`;
+
+
+const SliderDivG = styled.div`
+  background-color: #F8F8F8;
   height:100vh;
 `;
 
@@ -132,13 +173,26 @@ const SliderP = styled.h1`
   font-weight:bold;
 `;
 
+const SliderPw = styled.h1`
+  font-size: 1.2vw;
+  color:#c0bdbdcf;
+  cursor: pointer;
+  font-weight:bold;
+`;
+
+
 const SliderH1 = styled.h1`
   margin: 6px auto;
   margin-bottom: 80px;
   font-size: 2.5vw;
 `;
 
-
+const SliderH1w = styled.h1`
+  color:black;
+  font-size: 2.5vw;
+  margin: 6px auto;
+  margin-bottom:80px;
+`;
 
 
 const SliderUl = styled.ul`

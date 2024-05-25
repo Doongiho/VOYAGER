@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 const Header: React.FC = () => {
   return (
     <HeaderContainer>
-      <Link to="/">
+      <Link to="/Video">
         <LogoImage src={ImageLogo} alt="Logo" />
       </Link>
       <HeaderUl>
@@ -21,7 +21,7 @@ const Header: React.FC = () => {
             </Link>
           </EnbUl>
           <GnbUl>
-            <Link to="/">
+            <Link to="/main">
               <HeaderH2>소개</HeaderH2>
             </Link>
             <Link to="/video">
