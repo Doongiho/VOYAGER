@@ -87,6 +87,7 @@ const ServiceUl = styled.ul`
   text-align: center;
   flex-wrap: wrap;
   width:100%;
+  padding:0px;
 `;
 
 const ServiceLi = styled.li`

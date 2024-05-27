@@ -52,11 +52,13 @@ const VideoDiv = styled.div`
   width: 1200px;
   margin: 0 auto;
   height: 100%;
-  
+  padding: 140px 0;
+
 `;
+
 const VideoContainer = styled.div`
   background-color: #202124;
-  height:100vh;
+  height:100%;
   padding:10px 0;
   width: 100%;
 `;

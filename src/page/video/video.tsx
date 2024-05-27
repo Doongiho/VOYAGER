@@ -37,7 +37,7 @@ const Video: React.FC = () => {
 const VideoDiv = styled.div`
   color:#fff;
   flex-direction: column;
-  width:1200px;
+  width:80%;
   margin: 0 auto;
   height: 100%;
   display: flex;
@@ -48,8 +48,8 @@ const VideoDiv = styled.div`
 `;
 const VideoContainer = styled.div`
   background-color: #202124;
-  height:100vh;
-  padding:300px 0;
+  height:100%;
+  padding: 140px 0;
 `;
 const Videoh1 = styled.h1`
 `;
@@ -80,13 +80,14 @@ const ServiceUl = styled.ul`
   text-align: center;
   flex-wrap: wrap;
   width:100%;
+  padding:0px;
 `;
 
 const ServiceLi = styled.li`
-  width: 400px;
-  height: 500px;
+  width: 380px;
+  height: 380px;
   display: block;
-  margin:80px 20px 0 0;
+  margin: 30px 20px 0px 0px;
 `;
 const DivVideo = styled.div`
   width: 100%;
@@ -107,12 +108,13 @@ const VideoH3 = styled.h3`
     font-size: 19px;
     margin-top: 12px;
     margin-bottom: 0px
+    color:#fff;
 `;
 
 const VideoP = styled.p`
-font-size:15px;
-margin-top: 15px
-color:#eee;
+    font-size: 12px;
+    margin-top: 15px;
+    color: #aeaeae;
   
 `;
 const UserImage = styled.img`
@@ -120,16 +122,9 @@ const UserImage = styled.img`
     height: 40px;
     margin: 15px auto;
     border-radius: 50%;
-    width:10%;
   
 `;
 
-const Videos = styled.div`
-  display:flex;
-  flex-direction: column;
-  width: 20%;
-  text-align: center;
-`;
 const Videoss = styled.div`
   display:flex;
   flex-direction: column;
@@ -146,5 +141,6 @@ const VidesoDiv = styled.div`
 
 
 `;
+
 
 export default Video;
