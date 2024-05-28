@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import ImageUser from '../../assests/kakao.png';
+import { Link } from 'react-router-dom';
 
 
 const videoSales: React.FC = () => {
@@ -9,7 +10,7 @@ const videoSales: React.FC = () => {
       <VideoDiv>
         <VideoSales>
           <Videoh1>동영상 관리</Videoh1>
-          <ExplanationButton>구매하기</ExplanationButton>
+          <ExplanationButton><Link to="/videoPurchase" style={{ color: "#fff", textDecorationLine: "none" }}>구매하기</Link></ExplanationButton>
         </VideoSales>
         <ServiceUl>
           <ServiceLi>
