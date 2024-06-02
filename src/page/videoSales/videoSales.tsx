@@ -3,40 +3,49 @@ import styled from 'styled-components';
 import ImageUser from '../../assests/kakao.png';
 import { Link } from 'react-router-dom';
 
+export interface IFormInput {
+  title: string;
+  explanation: string;
+  price: number;
+  isValid: boolean;
+  videoFile?: File | null;
+}
 
-const videoSales: React.FC = () => {
+interface VideoSalesProps {
+  videoSales: IFormInput[];
+}
+
+const VideoSales: React.FC<VideoSalesProps> = ({ videoSales }) => {
   return (
     <VideoContainer>
       <VideoDiv>
-        <VideoSales>
+        <VideoSale>
           <Videoh1>동영상 관리</Videoh1>
           <ExplanationButton><Link to="/videoUpload" style={{ color: "#fff", textDecorationLine: "none" }}>판매하기</Link></ExplanationButton>
-        </VideoSales>
+        </VideoSale>
         <ServiceUl>
-          <ServiceLi>
-            <DivVideo>
-            </DivVideo>
-            <VidesoDiv>
-              <UserImage src={ImageUser} alt="Flash" />
-              <Videoss>
-                <VideoH3>
-                  왈왈 지는 강아지 영상
-                </VideoH3>
-                <VideoA>
-                  유저이름
-                </VideoA>
-                <VideoP>
-                  강아지는 왈왈 새끼강아지는 앙앙 고양이는 냥냥 부를때는 미야옹!
-                </VideoP>
-              </Videoss>
-            </VidesoDiv>
-          </ServiceLi>
+          {videoSales.map((video, index) => (
+            <ServiceLi key={index}>
+              <DivVideo>
+                {video.videoFile && (
+                  <VideoThumbnail
+                    src={URL.createObjectURL(video.videoFile)}
+                  />
+                )}
+              </DivVideo>
+              <VidesoDiv>
+                <Videoss>
+                  <VideoH3>{video.title}</VideoH3>
+                  <VideoP>{video.explanation}</VideoP>
+                </Videoss>
+              </VidesoDiv>
+            </ServiceLi>
+          ))}
         </ServiceUl>
       </VideoDiv>
     </VideoContainer>
   );
 };
-
 
 const VideoDiv = styled.div`
   flex-direction: column;
@@ -50,10 +59,10 @@ const VideoDiv = styled.div`
 `;
 const VideoContainer = styled.div`
   background-color: #202124;
-  height:100%;
+  min-height: 100vh;
   padding: 140px 0;
 `;
-const VideoSales = styled.div`
+const VideoSale = styled.div`
   width:100%;
   display: flex;
   justify-content: space-between;
@@ -65,7 +74,14 @@ const Videoh1 = styled.h1`
   color:#fff;
   
 `;
-
+const VideoThumbnail = styled.video`
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 1rem;
+    cursor: pointer;
+    background-position: bottom;
+    margin-bottom: 200px;
+`;
 
 const ExplanationButton = styled.button`
     width: 15%;
@@ -102,10 +118,9 @@ const ServiceLi = styled.li`
 `;
 const DivVideo = styled.div`
   width: 100%;
-  height: 250px;
+  height: 205px;
   display: block;
   border-radius: 1rem;
-  background:#fff;
   box-shadow: 2px 2px 2px #b2b2b2;
   margin:10px 0;
 `;
@@ -113,6 +128,7 @@ const DivVideo = styled.div`
 const VideoA = styled.a`
   font-size:12px;
   color:#eee;
+  margin-left: 2px;
   `;
 
 const VideoH3 = styled.h3`
@@ -120,13 +136,14 @@ const VideoH3 = styled.h3`
     margin-top: 12px;
     margin-bottom: 0px
     color:#fff;
+    margin-bottom: 3px;
 `;
 
 const VideoP = styled.p`
     font-size: 12px;
     margin-top: 15px;
     color: #aeaeae;
-  
+  margin-left: 2px;
 `;
 const UserImage = styled.img`
     width: 40px;
@@ -139,7 +156,7 @@ const UserImage = styled.img`
 const Videoss = styled.div`
   display:flex;
   flex-direction: column;
-  width: 80%;
+  width: 90%;
   text-align: left;
   justify-content: space-between;
   margin: 0 auto;
@@ -153,4 +170,5 @@ const VidesoDiv = styled.div`
 
 `;
 
-export default videoSales;
+
+export default VideoSales;

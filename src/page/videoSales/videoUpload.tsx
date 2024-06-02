@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ImageUpload from '../../assests/Upload.png';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-interface IFormInput {
+export interface IFormInput {
   title: string;
   explanation: string;
   price: number;
@@ -11,9 +11,13 @@ interface IFormInput {
   videoFile?: File | null;
 }
 
-const VideoUpload: React.FC = () => {
+
+interface VideoUploadProps {
+  onAddVideo: (newVideo: IFormInput) => void;
+}
+
+const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
   const { register, handleSubmit, reset, formState: { isValid, errors } } = useForm<IFormInput>();
-  const [videoSales, setVideoSales] = useState<IFormInput[]>([]);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -21,10 +25,11 @@ const VideoUpload: React.FC = () => {
   const onSubmit: SubmitHandler<IFormInput> = data => {
     const formData: IFormInput = {
       ...data,
-      videoFile: videoFile
+      videoFile: videoFile,
+      isValid: true,
     };
 
-    setVideoSales([...videoSales, formData]);
+    onAddVideo(formData);
     reset();
     setVideoUrl(null);
     setVideoFile(null);
