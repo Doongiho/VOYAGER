@@ -8,6 +8,8 @@ import VideoSales from './page/videoSales/videoSales';
 import Service from './page/service/service';
 import SignUp from './page/signUp/signUp';
 import VideoPurchase from './page/video/videoPurchase';
+import VideoUpload from './page/videoSales/videoUpload';
+import VideoManagement from './page/videoSales/videoManagement';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -24,6 +26,8 @@ function App() {
           <Route path="/videoSales" element={<VideoSales />}></Route>
           <Route path="/service" element={<Service />}></Route>
           <Route path="/signUp" element={<SignUp />}></Route>
+          <Route path="/videoUpload" element={<VideoUpload />}></Route>
+          <Route path="/videoManagement" element={<VideoManagement />}></Route>
         </Routes>
         <Footer />
       </BrowserRouter>
