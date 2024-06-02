@@ -53,14 +53,14 @@ const VideoDiv = styled.div`
   width:80%;
   margin: 0 auto;
   height: 100%;
-  display: flex;
-  justify-content: center;
   
 `;
+
 const VideoContainer = styled.div`
   background-color: #202124;
-  height:100%;
-  padding: 140px 0;
+  height:100vh;
+  padding:10px 0;
+  width: 100%;
 `;
 const Videoh1 = styled.h1`
   text-align: left;
