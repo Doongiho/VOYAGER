@@ -6,9 +6,14 @@ import { Link } from 'react-router-dom';
 
 interface HeaderProps {
   isLoggedIn: boolean;
+  onLogout: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
+const Header: React.FC<HeaderProps> = ({ isLoggedIn, onLogout }) => {
+
+  const handleLogout = () => {
+    onLogout();
+  };
   return (
     <HeaderContainer>
       <Link to="/Video">
@@ -21,7 +26,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
               <Link to="/login">
                 <HeaderH2>마이페이지</HeaderH2>
               </Link>
-              <Link to="/signUp">
+              <Link to="/signUp" onClick={handleLogout}>
                 <HeaderH2>로그아웃</HeaderH2>
               </Link>
             </EnbUl>

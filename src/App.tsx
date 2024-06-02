@@ -16,6 +16,7 @@ function App() {
   const [videoSales, setVideoSales] = useState<IFormInput[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
+
   const handleAddVideo = (newVideo: IFormInput) => {
     setVideoSales([...videoSales, newVideo]);
   };
@@ -31,7 +32,7 @@ function App() {
   return (
     <div>
       <BrowserRouter>
-        <Header isLoggedIn={isLoggedIn} />
+        <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<Video />}></Route>
           <Route path="/videoPurchase" element={<VideoPurchase />}></Route>
