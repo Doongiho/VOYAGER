@@ -49,18 +49,18 @@ const videoPurchase: React.FC = () => {
 };
 
 const VideoDiv = styled.div`
-  width: 1200px;
+  flex-direction: column;
+  width:80%;
   margin: 0 auto;
   height: 100%;
-  padding: 140px 0;
-
+  display: flex;
+  justify-content: center;
+  
 `;
-
 const VideoContainer = styled.div`
   background-color: #202124;
   height:100%;
-  padding:10px 0;
-  width: 100%;
+  padding: 140px 0;
 `;
 const Videoh1 = styled.h1`
   text-align: left;
@@ -120,9 +120,10 @@ color:#fff;
   `;
 
 const VideoP = styled.p`
-font-size: 15px;
-margin-top: 15px
-color: #eee;
+    font-size: 12px;
+    margin-top: 15px;
+    color: #aeaeae;
+  
 
 `;
 const UserImage = styled.img`
@@ -160,7 +161,7 @@ display:flex;
 justify-content: space-between;
 color:#565656;
 font-size:20px;
-box-shadow: 1px 1px 1px #3b393973;
+box-shadow: 1px 2px 1px #3b393973;
 `;
 const ExplanationLi2 = styled.li`
   list-style-type: none;
@@ -181,13 +182,11 @@ const ExplanationButton = styled.button`
     border: 1px solid #907AE7;
     background: #907AE7;
     cursor: pointer;
-    padding: 12px;
-    color: #fff;
+    padding: 10px;
+    color:#fff;
     box-shadow: 2px 2px 2px #b2b2b2;
-    font-size: 17px;
-    font-weight: bolder;
-    margin: auto 0;
-    height: 100%;
+    font-size:18px;
+    font-weight:bolder;
     &:hover {
         background-color: #8774d9;
     }

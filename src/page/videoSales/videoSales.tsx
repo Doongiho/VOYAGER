@@ -10,7 +10,7 @@ const videoSales: React.FC = () => {
       <VideoDiv>
         <VideoSales>
           <Videoh1>동영상 관리</Videoh1>
-          <ExplanationButton><Link to="/videoPurchase" style={{ color: "#fff", textDecorationLine: "none" }}>구매하기</Link></ExplanationButton>
+          <ExplanationButton><Link to="/videoUpload" style={{ color: "#fff", textDecorationLine: "none" }}>판매하기</Link></ExplanationButton>
         </VideoSales>
         <ServiceUl>
           <ServiceLi>
@@ -39,24 +39,27 @@ const videoSales: React.FC = () => {
 
 
 const VideoDiv = styled.div`
-  width: 1200px;
+  flex-direction: column;
+  width:80%;
   margin: 0 auto;
   height: 100%;
-  padding: 140px 0;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
 `;
-
-
+const VideoContainer = styled.div`
+  background-color: #202124;
+  height:100%;
+  padding: 140px 0;
+`;
 const VideoSales = styled.div`
   width:100%;
   display: flex;
   justify-content: space-between;
 `;
 
-const VideoContainer = styled.div`
-  background-color: #202124;
-  height:100%; 
-`;
+
 const Videoh1 = styled.h1`
   text-align: left;
   color:#fff;
