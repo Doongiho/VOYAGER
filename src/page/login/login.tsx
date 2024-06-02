@@ -21,8 +21,11 @@ interface IFormInput {
     isValid: boolean;
 }
 
+interface LoginProps {
+    onLogin: () => void;
+}
 
-const Login: React.FC = () => {
+const Login: React.FC<LoginProps> = ({ onLogin }) => {
     const {
         register,
         handleSubmit,
@@ -36,6 +39,7 @@ const Login: React.FC = () => {
         instance.post('/login', data)
             .then((response) => {
                 console.log(response.data);
+                onLogin();
                 navigate('/');
             })
             .catch((error) => {

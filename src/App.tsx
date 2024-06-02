@@ -14,20 +14,29 @@ import { IFormInput } from '../src/page/videoSales/videoUpload';
 
 function App() {
   const [videoSales, setVideoSales] = useState<IFormInput[]>([]);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const handleAddVideo = (newVideo: IFormInput) => {
     setVideoSales([...videoSales, newVideo]);
   };
 
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+
   return (
     <div>
       <BrowserRouter>
-        <Header />
+        <Header isLoggedIn={isLoggedIn} />
         <Routes>
           <Route path="/" element={<Video />}></Route>
           <Route path="/videoPurchase" element={<VideoPurchase />}></Route>
           <Route path="/main" element={<Main />}></Route>
-          <Route path="/login" element={<Login />}></Route>
+          <Route path="/login" element={<Login onLogin={handleLogin} />}></Route>
           <Route path="/video" element={<Video />}></Route>
           <Route path="/videoSales" element={<VideoSales videoSales={videoSales} />}></Route>
           <Route path="/service" element={<Service />}></Route>

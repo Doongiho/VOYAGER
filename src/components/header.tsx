@@ -4,37 +4,68 @@ import ImageLogo from '../assests/logo.png'
 import { Link } from 'react-router-dom';
 
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  isLoggedIn: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ isLoggedIn }) => {
   return (
     <HeaderContainer>
       <Link to="/Video">
         <LogoImage src={ImageLogo} alt="Logo" />
       </Link>
       <HeaderUl>
-        <HeaderLi>
-          <EnbUl>
-            <Link to="/login">
-              <HeaderH2>로그인</HeaderH2>
-            </Link>
-            <Link to="/signUp">
-              <HeaderH2>회원가입</HeaderH2>
-            </Link>
-          </EnbUl>
-          <GnbUl>
-            <Link to="/main">
-              <HeaderH2>소개</HeaderH2>
-            </Link>
-            <Link to="/video">
-              <HeaderH2>동영상 구매</HeaderH2>
-            </Link>
-            <Link to="/videoSales">
-              <HeaderH2>동영상 판매</HeaderH2>
-            </Link>
-            <Link to="/service">
-              <HeaderH2>고객센터</HeaderH2>
-            </Link>
-          </GnbUl>
-        </HeaderLi>
+        {isLoggedIn ? (
+          <HeaderLi>
+            <EnbUl>
+              <Link to="/login">
+                <HeaderH2>마이페이지</HeaderH2>
+              </Link>
+              <Link to="/signUp">
+                <HeaderH2>로그아웃</HeaderH2>
+              </Link>
+            </EnbUl>
+            <GnbUl>
+              <Link to="/main">
+                <HeaderH2>소개</HeaderH2>
+              </Link>
+              <Link to="/video">
+                <HeaderH2>동영상 구매</HeaderH2>
+              </Link>
+              <Link to="/videoSales">
+                <HeaderH2>동영상 판매</HeaderH2>
+              </Link>
+              <Link to="/service">
+                <HeaderH2>고객센터</HeaderH2>
+              </Link>
+            </GnbUl>
+          </HeaderLi>
+        ) : (
+          <HeaderLi>
+            <EnbUl>
+              <Link to="/login">
+                <HeaderH2>로그인</HeaderH2>
+              </Link>
+              <Link to="/signUp">
+                <HeaderH2>회원가입</HeaderH2>
+              </Link>
+            </EnbUl>
+            <GnbUl>
+              <Link to="/main">
+                <HeaderH2>소개</HeaderH2>
+              </Link>
+              <Link to="/video">
+                <HeaderH2>동영상 구매</HeaderH2>
+              </Link>
+              <Link to="/videoSales">
+                <HeaderH2>동영상 판매</HeaderH2>
+              </Link>
+              <Link to="/service">
+                <HeaderH2>고객센터</HeaderH2>
+              </Link>
+            </GnbUl>
+          </HeaderLi>
+        )}
       </HeaderUl>
     </HeaderContainer>
   );
