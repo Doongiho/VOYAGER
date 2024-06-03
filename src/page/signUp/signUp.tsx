@@ -23,6 +23,7 @@ interface IFormInput {
   password: string;
   passwordConfirm: string;
   isValid: boolean;
+  twitterImage: File;
 }
 
 const SignUp: React.FC = () => {
@@ -35,10 +36,26 @@ const SignUp: React.FC = () => {
   } = useForm<IFormInput>();
 
   const navigate = useNavigate();
+  const hiddenInputRef = useRef<HTMLInputElement | null>(null);
+
+  const fileUploadHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setValue('twitterImage', file);
+    }
+  };
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
-    instance.post('/join', data)
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (key === 'twitterImage') {
+        formData.append(key, value as File);
+      } else {
+        formData.append(key, String(value));
+      }
+    });
+
+    instance.post('/join', formData)
       .then((response) => {
         console.log(response.data);
         navigate('/');
@@ -50,7 +67,7 @@ const SignUp: React.FC = () => {
         } else if (error.request) {
           alert('서버에서 응답을 받지 못했습니다.');
         } else {
-          alert('요청을 보내는 중에 에러가 발생했습니다.');
+          console.log('요청을 보내는 중에 에러가 발생했습니다.');
         }
       });
   };
@@ -107,13 +124,32 @@ const SignUp: React.FC = () => {
   const handleBackendError = (errorMessage: string) => {
     alert(errorMessage);
   };
-
+  const handleProfileButtonClick = () => {
+    if (hiddenInputRef.current) {
+      hiddenInputRef.current.click();
+    }
+  };
   return (
     <div>
       <SignUpContainer>
         <SignUpDiv onSubmit={handleSubmit(onSubmit)}>
           <SignUpTitle>회원가입</SignUpTitle>
           <SignUpBox>
+            <P>프로필</P>
+            <ProfileDiv>
+              {watch('twitterImage') && <UserImage src={URL.createObjectURL(watch('twitterImage'))} alt="프로필 이미지" />}
+              <ProfileButton htmlFor="twitterImage"><ProfileInput
+                type="file"
+                {...register("twitterImage", {
+                  required: true,
+                })}
+                ref={(e) => {
+                  hiddenInputRef.current = e;
+                }}
+                name="twitterImage"
+                onChange={fileUploadHandler}
+              ></ProfileInput>사진 선택</ProfileButton>
+            </ProfileDiv>
             <P>이름</P>
             <Div>
               <DivIcon>
@@ -319,6 +355,37 @@ const SignUpTitle = styled.h1`
   font-size:27px;
   font-weight:bolder;
   margin-bottom: 2rem;
+`;
+const UserImage = styled.img`
+  width: 100px;
+  height: 100px;
+  border: 2px solid #00000012;
+  margin:0 auto;
+  border-radius: 50%;
+`;
+const ProfileButton = styled.label`
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #907AE7;
+  color: #FFF;
+  border: none;
+  border-radius: 0.5rem;
+  position: relative;
+  cursor: pointer;
+  margin: 20px 0;
+`;
+const ProfileDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+`;
+const ProfileInput = styled.input`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
 `;
 const DivError = styled.span`
   position: absolute;
