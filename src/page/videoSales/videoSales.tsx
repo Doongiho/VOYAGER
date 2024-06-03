@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ImageUser from '../../assests/kakao.png';
 import { Link } from 'react-router-dom';
@@ -16,32 +16,40 @@ interface VideoSalesProps {
 }
 
 const VideoSales: React.FC<VideoSalesProps> = ({ videoSales }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(true);
+
   return (
     <VideoContainer>
       <VideoDiv>
-        <VideoSale>
-          <Videoh1>동영상 관리</Videoh1>
-          <ExplanationButton><Link to="/videoUpload" style={{ color: "#fff", textDecorationLine: "none" }}>판매하기</Link></ExplanationButton>
-        </VideoSale>
-        <ServiceUl>
-          {videoSales.map((video, index) => (
-            <ServiceLi key={index}>
-              <DivVideo>
-                {video.videoFile && (
-                  <VideoThumbnail
-                    src={URL.createObjectURL(video.videoFile)}
-                  />
-                )}
-              </DivVideo>
-              <VidesoDiv>
-                <Videoss>
-                  <VideoH3>{video.title}</VideoH3>
-                  <VideoP>{video.explanation}</VideoP>
-                </Videoss>
-              </VidesoDiv>
-            </ServiceLi>
-          ))}
-        </ServiceUl>
+        {isLoggedIn ? (
+          <NotLoggedInMessage>로그인 후 동영상을 판매해보세요!</NotLoggedInMessage>
+        ) : (
+          <>
+            <VideoSale>
+              <Videoh1>동영상 관리</Videoh1>
+              <ExplanationButton><Link to="/videoUpload" style={{ color: "#fff", textDecorationLine: "none" }}>판매하기</Link></ExplanationButton>
+            </VideoSale>
+            <ServiceUl>
+              {videoSales.map((video, index) => (
+                <ServiceLi key={index}>
+                  <DivVideo>
+                    {video.videoFile && (
+                      <VideoThumbnail
+                        src={URL.createObjectURL(video.videoFile)}
+                      />
+                    )}
+                  </DivVideo>
+                  <VidesoDiv>
+                    <Videoss>
+                      <VideoH3>{video.title}</VideoH3>
+                      <VideoP>{video.explanation}</VideoP>
+                    </Videoss>
+                  </VidesoDiv>
+                </ServiceLi>
+              ))}
+            </ServiceUl>
+          </>
+        )}
       </VideoDiv>
     </VideoContainer>
   );
@@ -168,6 +176,11 @@ const VidesoDiv = styled.div`
   justify-content: normal;
 
 
+`;
+const NotLoggedInMessage = styled.h1`
+    margin-top: 150px;
+    color: #fff;
+}
 `;
 
 
