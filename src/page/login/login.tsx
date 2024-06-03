@@ -32,6 +32,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
         formState: { isValid }
     } = useForm<IFormInput>();
 
+    const [showPassword, setShowPassword] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<IFormInput> = async (data) => {
@@ -44,9 +46,9 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             })
             .catch((error) => {
                 console.error(error);
+                setErrorMessage('이메일 또는 비밀번호를 다시 확인하세요.');
             });
     };
-    const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword((prevState) => !prevState);
@@ -91,6 +93,14 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                                 <Icon className="material-symbols-outlined">lock</Icon>
                             </DivIcon>
                         </Div>
+                        {errorMessage &&
+                            <Div>
+                                <DivError>
+                                    <ErrorIcon className="material-symbols-outlined">error</ErrorIcon>
+                                </DivError>
+                                <ErrorP>{errorMessage}</ErrorP>
+                            </Div>
+                        }
                         <SpanButton>
                             <LoginButton
                                 type="submit"
@@ -243,6 +253,28 @@ const PasswordP = styled.p`
     font-size:13px;
     font-weight:bold;
     margin-right:0.3rem;
+`;
+
+const DivError = styled.span`
+  position: absolute;
+  left: 0.6rem;
+  top:0px;
+}
+`;
+
+const ErrorIcon = styled.div`
+    font - size: 21px;
+    position: absolute;
+    transform: translateY(-50 %);
+    color: #F90;
+}
+`;
+
+const ErrorP = styled.div`
+  padding: 0rem 1rem 0rem 2.4rem;
+  color:#F90;
+  font-size:15px;
+
 `;
 
 const SpanSocial = styled.span`
