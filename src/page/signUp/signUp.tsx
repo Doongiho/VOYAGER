@@ -44,10 +44,16 @@ const SignUp: React.FC = () => {
         navigate('/');
       })
       .catch((error) => {
-        console.error(error);
+        if (error.response) {
+          const errorMessage = error.response.data.message;
+          alert(errorMessage);
+        } else if (error.request) {
+          alert('서버에서 응답을 받지 못했습니다.');
+        } else {
+          alert('요청을 보내는 중에 에러가 발생했습니다.');
+        }
       });
   };
-
   const password = useRef<string>();
   password.current = watch("password");
 
@@ -97,6 +103,9 @@ const SignUp: React.FC = () => {
 
   const handleButtonClick = () => {
     togglePostcodeModal();
+  };
+  const handleBackendError = (errorMessage: string) => {
+    alert(errorMessage);
   };
 
   return (
