@@ -2,14 +2,7 @@ import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import ImageUpload from '../../assests/Upload.png';
 import { useForm, SubmitHandler } from 'react-hook-form';
-
-export interface IFormInput {
-  title: string;
-  explanation: string;
-  price: number;
-  isValid: boolean;
-  videoFile?: File | null;
-}
+import { IFormInput } from '../../types/IFormInput';
 
 
 interface VideoUploadProps {

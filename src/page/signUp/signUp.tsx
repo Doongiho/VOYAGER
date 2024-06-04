@@ -4,6 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import PostcodeModal from '../../components/modal/postCodeModal';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { IFormInput } from '../../types/IFormInput';
 
 const instance = axios.create({
   baseURL: 'http://localhost:7777',
@@ -12,19 +13,6 @@ const instance = axios.create({
   },
 });
 
-interface IFormInput {
-  name: string;
-  username: string;
-  location1: string;
-  location2: string;
-  location3: string;
-  location4: string;
-  email: string;
-  password: string;
-  passwordConfirm: string;
-  isValid: boolean;
-  twitterImage: File;
-}
 
 const SignUp: React.FC = () => {
   const {

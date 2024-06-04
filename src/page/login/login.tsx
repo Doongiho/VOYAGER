@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { IFormInput } from '../../types/IFormInput';
 
 
 const instance = axios.create({
@@ -14,12 +15,6 @@ const instance = axios.create({
     },
 });
 
-
-interface IFormInput {
-    email: string;
-    password: string;
-    isValid: boolean;
-}
 
 interface LoginProps {
     onLogin: () => void;
@@ -42,7 +37,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             .then((response) => {
                 console.log(response.data);
                 onLogin();
-                navigate('/');
+                navigate('/main');
             })
             .catch((error) => {
                 console.error(error);
