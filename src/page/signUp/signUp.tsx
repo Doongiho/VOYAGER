@@ -46,7 +46,7 @@ const SignUp: React.FC = () => {
     instance.post('/join', formData)
       .then((response) => {
         console.log(response.data);
-        navigate('/');
+        navigate('/login');
       })
       .catch((error) => {
         if (error.response) {
