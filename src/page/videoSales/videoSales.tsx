@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { IFormInput } from '../../types/IFormInput';
@@ -9,21 +9,37 @@ interface VideoSalesProps {
   onDeleteVideo: (videoId: string) => void;
 }
 
-
 const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn, onDeleteVideo }) => {
-
   const navigate = useNavigate();
   const [deletingVideoId, setDeletingVideoId] = useState<string | null>(null);
+  const deleteButtonRef = useRef<HTMLButtonElement>(null);
 
   const handleVideoClick = (video: IFormInput) => {
     navigate('/videoManagement', { state: { video } });
+    setDeletingVideoId(null);
   };
-
 
   const handleDelete = (videoId: string) => {
     onDeleteVideo(videoId);
     setDeletingVideoId(null);
   };
+
+  const handleDeleteIconClick = (videoId: string) => {
+    setDeletingVideoId(prev => (prev === videoId ? null : videoId));
+  };
+
+  const handleOutsideClick = (e: MouseEvent) => {
+    if (deleteButtonRef.current && !deleteButtonRef.current.contains(e.target as Node)) {
+      setDeletingVideoId(null);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, []);
 
   return (
     <VideoContainer>
@@ -59,15 +75,17 @@ const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn, onDelet
                         className="material-symbols-outlined"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setDeletingVideoId(video.id);
+                          handleDeleteIconClick(video.id);
                         }}
                       >
                         more_vert
                       </Icon>
-                      <DeleteButton onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(video.id);
-                      }}>삭제하기</DeleteButton>
+                      {deletingVideoId === video.id && (
+                        <DeleteButton ref={deleteButtonRef} onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(video.id);
+                        }}>삭제하기</DeleteButton>
+                      )}
                     </DivIcon>
                   </VidesoDiv>
                 </ServiceLi>
@@ -79,6 +97,7 @@ const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn, onDelet
     </VideoContainer>
   );
 };
+
 const VideoDiv = styled.div`
   flex-direction: column;
   width: 80%;
@@ -96,19 +115,31 @@ const DivIcon = styled.span`
 }
 `;
 const DeleteButton = styled.button`
-   cursor:pointer;
+       WIDTH: 83PX;
+    HEIGHT: 27PX;
+    MARGIN: 0 AUTO;
+    POSITION: ABSOLUTE;
+    RIGHT: 15PX;
+    TOP: 26PX;
+    BACKGROUND: #FFF;
+    FONT-WEIGHT: 600;
+    border-radius: 0.2rem;
+    font-family: "IBM Plex Sans KR", sans-serif;
+    CURSOR: POINTER;
 }
 `;
 
 const Icon = styled.span`
     font-size: 22px;
     color: #7c7c7c;
+    CURSOR: POINTER
 }
 `;
 const VideoContainer = styled.div`
   background-color: #202124;
   min-height: 100vh;
   padding: 140px 0;
+
 `;
 
 const VideoSale = styled.div`
