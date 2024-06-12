@@ -23,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, onLogout }) => {
         {isLoggedIn ? (
           <HeaderLi>
             <EnbUl>
-              <Link to="/login">
+              <Link to="/MyPage">
                 <HeaderH2>마이페이지</HeaderH2>
               </Link>
               <Link to="/signUp" onClick={handleLogout}>
