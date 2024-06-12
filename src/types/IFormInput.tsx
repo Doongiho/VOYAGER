@@ -15,4 +15,5 @@ export interface IFormInput {
     location4: string;
     twitterImage: File;
     passwordConfirm: string;
+    id: string;
 }
