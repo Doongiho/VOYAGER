@@ -9,6 +9,8 @@ import Service from './page/service/service';
 import SignUp from './page/signUp/signUp';
 import VideoPurchase from './page/video/videoPurchase';
 import VideoUpload from './page/videoSales/videoUpload';
+import MyPage from './page/myPage/myPage';
+import VideoManagement from './page/videoSales/videoManagement';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { IFormInput } from './types/IFormInput';
 
@@ -27,6 +29,10 @@ function App() {
   const handleLogout = () => {
     setIsLoggedIn(false);
   };
+  const handleDeleteVideo = (videoId: string) => {
+    const updatedVideoSales = videoSales.filter(video => video.id !== videoId);
+    setVideoSales(updatedVideoSales);
+  };
 
   return (
     <div>
@@ -38,9 +44,11 @@ function App() {
           <Route path="/main" element={<Main />}></Route>
           <Route path="/login" element={<Login onLogin={handleLogin} />}></Route>
           <Route path="/video" element={<Video />}></Route>
-          <Route path="/videoSales" element={<VideoSales videoSales={videoSales} isLoggedIn={isLoggedIn} />}></Route>
+          <Route path="/videoSales" element={<VideoSales videoSales={videoSales} isLoggedIn={isLoggedIn} onDeleteVideo={handleDeleteVideo} />} />
           <Route path="/service" element={<Service />}></Route>
+          <Route path="/videoManagement" element={<VideoManagement />}></Route>
           <Route path="/signUp" element={<SignUp />}></Route>
+          <Route path="/myPage" element={<MyPage />}></Route>
           <Route path="/videoUpload" element={<VideoUpload onAddVideo={handleAddVideo} />}></Route>
         </Routes>
         <Footer />
