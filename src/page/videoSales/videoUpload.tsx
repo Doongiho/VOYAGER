@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import ImageUpload from '../../assests/Upload.png';
+import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { IFormInput } from '../../types/IFormInput';
-
 
 interface VideoUploadProps {
   onAddVideo: (newVideo: IFormInput) => void;
@@ -14,18 +14,21 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<IFormInput> = data => {
     const formData: IFormInput = {
       ...data,
       videoFile: videoFile,
       isValid: true,
+      id: Math.random().toString(36).substring(7),
     };
 
     onAddVideo(formData);
     reset();
     setVideoUrl(null);
     setVideoFile(null);
+    navigate('/videoSales');
   };
 
   const handleImageClick = () => {
@@ -54,7 +57,8 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
                 <ExplanationLis>
                   {videoUrl ? (
                     <VideoThumbnail
-                      src={videoUrl} controls />
+                      src={videoUrl}
+                      controls />
                   ) : (
                     <UploadDiv>
                       <UploadImage src={ImageUpload} alt="upload" onClick={handleImageClick} />
@@ -121,8 +125,9 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
                 )}
                 <ExplanationLi>
                   <ExplanationButton
-                    isValid={isValid}
-                    type="submit">저장하기</ExplanationButton>
+                    isValid={isValid && videoUrl !== null}
+                    type="submit"
+                    disabled={!isValid || videoUrl === null}>저장하기</ExplanationButton>
                 </ExplanationLi>
               </ExplanationUl>
             </form>
@@ -132,7 +137,6 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
     </VideoContainer>
   );
 };
-
 const VideoThumbnail = styled.video`
   width: 80%;
   margin: 80px auto;
