@@ -1,14 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IFormInput } from '../../types/IFormInput';
 
 interface VideoSalesProps {
   videoSales: IFormInput[];
   isLoggedIn: boolean;
+  onDeleteVideo: (videoId: string) => void;
 }
 
-const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn }) => {
+
+const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn, onDeleteVideo }) => {
+
+  const navigate = useNavigate();
+  const [deletingVideoId, setDeletingVideoId] = useState<string | null>(null);
+
+  const handleVideoClick = (video: IFormInput) => {
+    navigate('/videoManagement', { state: { video } });
+  };
+
+
+  const handleDelete = (videoId: string) => {
+    onDeleteVideo(videoId);
+    setDeletingVideoId(null);
+  };
+
   return (
     <VideoContainer>
       <VideoDiv>
@@ -18,11 +34,13 @@ const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn }) => {
           <>
             <VideoSale>
               <Videoh1>동영상 관리</Videoh1>
-              <ExplanationButton><Link to="/videoUpload" style={{ color: "#fff", textDecorationLine: "none" }}>판매하기</Link></ExplanationButton>
+              <ExplanationButton>
+                <Link to="/videoUpload" style={{ color: "#fff", textDecorationLine: "none" }}>판매하기</Link>
+              </ExplanationButton>
             </VideoSale>
             <ServiceUl>
               {videoSales.map((video, index) => (
-                <ServiceLi key={index}>
+                <ServiceLi key={index} onClick={() => handleVideoClick(video)}>
                   <DivVideo>
                     {video.videoFile && (
                       <VideoThumbnail
@@ -33,8 +51,24 @@ const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn }) => {
                   <VidesoDiv>
                     <Videoss>
                       <VideoH3>{video.title}</VideoH3>
+                      <VideoA>{video.username}</VideoA>
                       <VideoP>{video.explanation}</VideoP>
                     </Videoss>
+                    <DivIcon>
+                      <Icon
+                        className="material-symbols-outlined"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setDeletingVideoId(video.id);
+                        }}
+                      >
+                        more_vert
+                      </Icon>
+                      <DeleteButton onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(video.id);
+                      }}>삭제하기</DeleteButton>
+                    </DivIcon>
                   </VidesoDiv>
                 </ServiceLi>
               ))}
@@ -45,7 +79,6 @@ const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn }) => {
     </VideoContainer>
   );
 };
-
 const VideoDiv = styled.div`
   flex-direction: column;
   width: 80%;
@@ -55,7 +88,23 @@ const VideoDiv = styled.div`
   justify-content: center;
   align-items: center;
 `;
+const DivIcon = styled.span`
+    position: absolute;
+    right: 0px;
+    width: 10%;
+    top: 20px;
+}
+`;
+const DeleteButton = styled.button`
+   cursor:pointer;
+}
+`;
 
+const Icon = styled.span`
+    font-size: 22px;
+    color: #7c7c7c;
+}
+`;
 const VideoContainer = styled.div`
   background-color: #202124;
   min-height: 100vh;
@@ -132,6 +181,10 @@ const VideoH3 = styled.h3`
   color: #fff;
   margin-bottom: 3px;
 `;
+const VideoA = styled.a`
+  font-size:12px;
+  color:#eee;
+  `;
 
 const VideoP = styled.p`
   font-size: 12px;
@@ -139,20 +192,28 @@ const VideoP = styled.p`
   color: #aeaeae;
   margin-left: 2px;
 `;
+const UserImage = styled.img`
+    width: 40px;
+    height: 40px;
+    margin: 15px auto;
+    border-radius: 50%;
+  
+`;
 
 const Videoss = styled.div`
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 80%;
   text-align: left;
-  justify-content: space-between;
-  margin: 0 auto;
+  margin-left:20px;
 `;
 
 const VidesoDiv = styled.div`
   display: flex;
   width: 100%;
-  justify-content: normal;
+  position: relative;
+  align-items: center;
+  flex-direction: row;
 `;
 
 const NotLoggedInMessage = styled.h1`
