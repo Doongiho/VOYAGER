@@ -1,19 +1,13 @@
 export interface IFormInput {
-    title: string;
-    explanation: string;
-    price: number;
-    isValid: boolean;
-    videoFile?: File | null;
-    isLoggedIn: boolean;
-    email: string;
-    password: string;
+    id: string;
     name: string;
     username: string;
+    email: string;
     location1: string;
     location2: string;
     location3: string;
     location4: string;
-    twitterImage: File;
-    passwordConfirm: string;
-    id: string;
+    twitterImage?: File;
+    password: string;
+    passwordConfirm?: string;
 }
