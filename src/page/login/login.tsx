@@ -7,15 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { IFormInput } from '../../types/IFormInput';
 
-
-const instance = axios.create({
-    baseURL: 'http://localhost:7777',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
-
-
 interface LoginProps {
     onLogin: () => void;
 }
@@ -33,22 +24,25 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
     const onSubmit: SubmitHandler<IFormInput> = async (data) => {
         console.log(data);
-        instance.post('/login', data)
-            .then((response) => {
-                console.log(response.data);
+
+        const storedUserInfo = localStorage.getItem('userData');
+
+        if (storedUserInfo) {
+            const userData: IFormInput = JSON.parse(storedUserInfo);
+            if (data.email === userData.email && data.password === userData.password) {
                 onLogin();
                 navigate('/main');
-            })
-            .catch((error) => {
-                console.error(error);
+            } else {
                 setErrorMessage('이메일 또는 비밀번호를 다시 확인하세요.');
-            });
+            }
+        } else {
+            setErrorMessage('등록된 사용자 정보가 없습니다.');
+        }
     };
 
     const togglePasswordVisibility = () => {
         setShowPassword((prevState) => !prevState);
     };
-
 
     return (
         <div>

@@ -1,18 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import PostcodeModal from '../../components/modal/postCodeModal';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { IFormInput } from '../../types/IFormInput';
-
-const instance = axios.create({
-  baseURL: 'http://localhost:7777',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
-
 
 const SignUp: React.FC = () => {
   const {
@@ -23,42 +15,31 @@ const SignUp: React.FC = () => {
     formState: { errors, isValid }
   } = useForm<IFormInput>();
 
+
   const navigate = useNavigate();
   const hiddenInputRef = useRef<HTMLInputElement | null>(null);
-
-  const fileUploadHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setValue('twitterImage', file);
-    }
-  };
+  const [userId, setUserId] = useState<number>(1);
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    const formData = new FormData();
-    Object.entries(data).forEach(([key, value]) => {
-      if (key === 'twitterImage') {
-        formData.append(key, value as File);
-      } else {
-        formData.append(key, String(value));
-      }
-    });
+    let userId = parseInt(localStorage.getItem('userId') || '1');
 
-    instance.post('/join', formData)
-      .then((response) => {
-        console.log(response.data);
-        navigate('/login');
-      })
-      .catch((error) => {
-        if (error.response) {
-          const errorMessage = error.response.data.message;
-          alert(errorMessage);
-        } else if (error.request) {
-          alert('서버에서 응답을 받지 못했습니다.');
-        } else {
-          console.log('요청을 보내는 중에 에러가 발생했습니다.');
-        }
-      });
-  };
+    const twitterImageName = watch('twitterImage') ? watch('twitterImage')!.name : null;
+
+    const userData = {
+      ...data,
+      id: userId,
+      twitterImage: twitterImageName
+    };
+
+    localStorage.setItem('userData', JSON.stringify(userData));
+    localStorage.setItem('isLoggedIn', 'true');
+    alert('회원가입이 완료되었습니다.');
+
+    userId++;
+
+    localStorage.setItem('userId', userId.toString());
+  }
+
   const password = useRef<string>();
   password.current = watch("password");
 
@@ -77,7 +58,12 @@ const SignUp: React.FC = () => {
   const togglePasswordConfirmVisibility = () => {
     setShowPasswordConfirm((prevState) => !prevState);
   };
-
+  const fileUploadHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setValue('twitterImage', file);
+    }
+  };
   const handleComplete = (data: any) => {
     let fullAddress = '';
     let extraAddress = '';
@@ -117,6 +103,7 @@ const SignUp: React.FC = () => {
       hiddenInputRef.current.click();
     }
   };
+
   return (
     <div>
       <SignUpContainer>
@@ -125,7 +112,7 @@ const SignUp: React.FC = () => {
           <SignUpBox>
             <P>프로필</P>
             <ProfileDiv>
-              {watch('twitterImage') && <UserImage src={URL.createObjectURL(watch('twitterImage'))} alt="프로필 이미지" />}
+              {watch('twitterImage') && <UserImage src={URL.createObjectURL(watch('twitterImage')!)} alt="프로필 이미지" />}
               <ProfileButton htmlFor="twitterImage"><ProfileInput
                 type="file"
                 {...register("twitterImage", {
