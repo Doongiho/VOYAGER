@@ -1,15 +1,15 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { IFormInput } from '../../types/IFormInput';
+import { IVideo } from '../../types/IVideo';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 const VideoManagement: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const video = location.state?.video as IFormInput;
+  const video = location.state?.video as IVideo;
 
-  const { register, handleSubmit } = useForm<IFormInput>({
+  const { register, handleSubmit } = useForm<IVideo>({
     defaultValues: {
       title: video.title,
       explanation: video.explanation,
@@ -21,7 +21,7 @@ const VideoManagement: React.FC = () => {
     return <div>비디오 데이터를 찾을 수 없습니다.</div>;
   }
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const onSubmit: SubmitHandler<IVideo> = (data) => {
     const updatedVideo = { ...video, ...data };
     navigate('/videoSales', { state: { updatedVideo } });
   };
@@ -38,7 +38,9 @@ const VideoManagement: React.FC = () => {
                 </ExplanationLi1>
                 <ExplanationLi>
                   <DivVideo1>
-                    {video.videoFile && <VideoThumbnail src={URL.createObjectURL(video.videoFile)} />}
+                    {video.videoFile instanceof Blob && (
+                      <VideoThumbnail src={URL.createObjectURL(video.videoFile)} />
+                    )}
                   </DivVideo1>
                   <ExplanationP1>구매수:</ExplanationP1>
                 </ExplanationLi>
