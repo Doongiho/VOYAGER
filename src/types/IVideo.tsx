@@ -7,4 +7,6 @@ export interface IVideo {
     isLoggedIn: boolean;
     id: string;
     videoStr: string;
+    username: string;
+    twitterImage: string;
 }
