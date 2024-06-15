@@ -1,20 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
-import { IFormInput } from '../../types/IFormInput';
-
-interface VideoSalesProps {
-  videoSales: IFormInput[];
-  isLoggedIn: boolean;
-  onDeleteVideo: (videoId: string) => void;
-}
+import { IVideo } from '../../types/IVideo';
+import { VideoSalesProps } from '../../types/VideoSalesProps';
 
 const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn, onDeleteVideo }) => {
+  const userVideoString = localStorage.getItem('formData');
+  const formData = userVideoString ? JSON.parse(userVideoString) : null;
   const navigate = useNavigate();
   const [deletingVideoId, setDeletingVideoId] = useState<string | null>(null);
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
+  const userDataString = localStorage.getItem('userData');
+  const userData = userDataString ? JSON.parse(userDataString) : null;
 
-  const handleVideoClick = (video: IFormInput) => {
+  const handleVideoClick = (video: IVideo) => {
     navigate('/videoManagement', { state: { video } });
     setDeletingVideoId(null);
   };
@@ -41,6 +40,9 @@ const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn, onDelet
     };
   }, []);
 
+  const loggedInUserId = userData?.id;
+  const filteredVideoSales = videoSales.filter((video: IVideo) => video.id === loggedInUserId);
+
   return (
     <VideoContainer>
       <VideoDiv>
@@ -55,10 +57,10 @@ const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn, onDelet
               </ExplanationButton>
             </VideoSale>
             <ServiceUl>
-              {videoSales.map((video, index) => (
+              {filteredVideoSales.map((video: IVideo, index: number) => (
                 <ServiceLi key={index} onClick={() => handleVideoClick(video)}>
                   <DivVideo>
-                    {video.videoFile && (
+                    {video.videoFile && video.videoFile instanceof Blob && (
                       <VideoThumbnail
                         src={URL.createObjectURL(video.videoFile)}
                       />
@@ -67,7 +69,6 @@ const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn, onDelet
                   <VidesoDiv>
                     <Videoss>
                       <VideoH3>{video.title}</VideoH3>
-                      <VideoA>{video.username}</VideoA>
                       <VideoP>{video.explanation}</VideoP>
                     </Videoss>
                     <DivIcon>
@@ -75,15 +76,15 @@ const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn, onDelet
                         className="material-symbols-outlined"
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleDeleteIconClick(video.id);
+                          handleDeleteIconClick(video.videoStr);
                         }}
                       >
                         more_vert
                       </Icon>
-                      {deletingVideoId === video.id && (
+                      {deletingVideoId === video.videoStr && (
                         <DeleteButton ref={deleteButtonRef} onClick={(e) => {
                           e.stopPropagation();
-                          handleDelete(video.id);
+                          handleDelete(video.videoStr);
                         }}>삭제하기</DeleteButton>
                       )}
                     </DivIcon>
@@ -97,6 +98,7 @@ const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn, onDelet
     </VideoContainer>
   );
 };
+
 
 const VideoDiv = styled.div`
   flex-direction: column;
