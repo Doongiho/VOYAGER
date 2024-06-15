@@ -19,13 +19,23 @@ const SignUp: React.FC = () => {
 
   const navigate = useNavigate();
   const hiddenInputRef = useRef<HTMLInputElement | null>(null);
+
   const [userId, setUserId] = useState<number>(() => {
     const storedUserId = localStorage.getItem('userId');
     return storedUserId ? parseInt(storedUserId, 10) : 1;
   });
 
+  useEffect(() => {
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+      setUserId(parseInt(storedUserId, 10));
+    }
+  }, []);
+
+
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    let userId = parseInt(localStorage.getItem('userId') || '1');
+    const newUserId = userId + 1;
+    localStorage.setItem('userId', newUserId.toString());
 
     const twitterImageName = watch('twitterImage') ? watch('twitterImage')!.name : null;
 
@@ -37,11 +47,9 @@ const SignUp: React.FC = () => {
 
     localStorage.setItem('userData', JSON.stringify(userData));
     localStorage.setItem('isLoggedIn', 'true');
+
     alert('회원가입이 완료되었습니다.');
-
-    userId++;
-
-    localStorage.setItem('userId', userId.toString());
+    navigate('/');
   }
 
   const password = useRef<string>();
