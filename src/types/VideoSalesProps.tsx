@@ -1,7 +1,7 @@
 import { IVideo } from './IVideo';
 
 export interface VideoSalesProps {
-    videoSales: IVideo[];
+    videos: IVideo[];
     isLoggedIn: boolean;
     onDeleteVideo: (videoId: string) => void;
 }
