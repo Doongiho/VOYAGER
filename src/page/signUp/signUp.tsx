@@ -6,6 +6,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { IFormInput } from '../../types/IFormInput';
 
+
 const SignUp: React.FC = () => {
   const {
     register,
@@ -18,7 +19,10 @@ const SignUp: React.FC = () => {
 
   const navigate = useNavigate();
   const hiddenInputRef = useRef<HTMLInputElement | null>(null);
-  const [userId, setUserId] = useState<number>(1);
+  const [userId, setUserId] = useState<number>(() => {
+    const storedUserId = localStorage.getItem('userId');
+    return storedUserId ? parseInt(storedUserId, 10) : 1;
+  });
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     let userId = parseInt(localStorage.getItem('userId') || '1');
