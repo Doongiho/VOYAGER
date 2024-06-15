@@ -15,7 +15,7 @@ const Video: React.FC<VideoSalesProps> = ({ videos }) => {
   }, [videos]);
 
   const handleVideoClick = (video: IVideo) => {
-    navigate('/videoManagement', { state: { video } });
+    navigate('/videoPurchase', { state: { video } });
   };
 
   return (
