@@ -1,9 +1,22 @@
 import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { IVideo } from '../../types/IVideo';
+import { useForm, SubmitHandler } from 'react-hook-form';
 import ImageUser from '../../assests/kakao.png';
 
-
 const videoPurchase: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const video = location.state?.video as IVideo;
+
+  const { register, handleSubmit } = useForm<IVideo>({
+    defaultValues: {
+      title: video.title,
+      explanation: video.explanation,
+      price: video.price,
+    },
+  });
   return (
     <VideoContainer>
       <VideoDiv>
@@ -11,19 +24,16 @@ const videoPurchase: React.FC = () => {
         <Div>
           <PurchaseDiv>
             <DivVideo>
+              {video.videoFile instanceof Blob && (
+                <VideoThumbnail src={URL.createObjectURL(video.videoFile)} />
+              )}
             </DivVideo>
             <VidesoDiv>
-              <UserImage src={ImageUser} alt="Flash" />
+              <UserImage src={ImageUser} alt="User" />
               <Videoss>
-                <VideoH3>
-                  왈왈 지는 강아지 영상
-                </VideoH3>
-                <VideoA>
-                  유저이름
-                </VideoA>
-                <VideoP>
-                  강아지는 왈왈 새끼강아지는 앙앙 고양이는 냥냥 부를때는 미야옹!
-                </VideoP>
+                <VideoH3>{video.title}</VideoH3>
+                <VideoA>{video.username}</VideoA>
+                <VideoP>{video.explanation}</VideoP>
               </Videoss>
             </VidesoDiv>
           </PurchaseDiv>
@@ -34,10 +44,12 @@ const videoPurchase: React.FC = () => {
                 <ExplanationButton>무료 다운로드</ExplanationButton>
               </ExplanationLi1>
               <ExplanationLi2>
-                <ExplanationP><ColoredText>구매 혜택</ColoredText>워크마크 제거<ColoredText1></ColoredText1>고화질 영상</ExplanationP>
+                <ExplanationP>
+                  <ColoredText>구매 혜택:</ColoredText> 워크마크 제거, 고화질 영상
+                </ExplanationP>
               </ExplanationLi2>
               <ExplanationLi3>
-                <ExplanationP>12000₩</ExplanationP>
+                <ExplanationP>{video.price}₩</ExplanationP>
                 <ExplanationButton>구매하기</ExplanationButton>
               </ExplanationLi3>
             </ExplanationUl>
@@ -102,6 +114,12 @@ const DivVideo = styled.div`
   background:#fff;
   box-shadow: 2px 2px 2px #b2b2b2;
   margin:10px 0;
+`;
+
+const VideoThumbnail = styled.video`
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
 `;
 
 
