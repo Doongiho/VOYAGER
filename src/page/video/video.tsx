@@ -1,33 +1,46 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import ImageUser from '../../assests/kakao.png';
+import { useNavigate } from 'react-router-dom';
+import { IVideo } from '../../types/IVideo';
+import { VideoSalesProps } from '../../types/VideoSalesProps';
 
+const Video: React.FC<VideoSalesProps> = ({ videos }) => {
+  const navigate = useNavigate();
+  const [filteredVideoSales, setFilteredVideoSales] = useState<IVideo[]>([]);
 
-const Video: React.FC = () => {
+  useEffect(() => {
+    if (videos) {
+      setFilteredVideoSales(videos);
+    }
+  }, [videos]);
+
+  const handleVideoClick = (video: IVideo) => {
+    navigate('/videoManagement', { state: { video } });
+  };
+
   return (
     <VideoContainer>
       <VideoDiv>
         <Videoh1>원하는 동영상을 검색해보세요.</Videoh1>
-        <Input></Input>
+        <Input placeholder="검색어를 입력하세요"></Input>
         <ServiceUl>
-          <ServiceLi>
-            <DivVideo>
-            </DivVideo>
-            <VidesoDiv>
-              <UserImage src={ImageUser} alt="Flash" />
-              <Videoss>
-                <VideoH3>
-                  왈왈 지는 강아지 영상
-                </VideoH3>
-                <VideoA>
-                  유저이름
-                </VideoA>
-                <VideoP>
-                  강아지는 왈왈 새끼강아지는 앙앙 고양이는 냥냥 부를때는 미야옹!
-                </VideoP>
-              </Videoss>
-            </VidesoDiv>
-          </ServiceLi>
+          {filteredVideoSales.map((video: IVideo, index: number) => (
+            <ServiceLi key={index} onClick={() => handleVideoClick(video)}>
+              <DivVideo>
+                {video.videoFile && video.videoFile instanceof Blob && (
+                  <VideoThumbnail src={URL.createObjectURL(video.videoFile)} />
+                )}
+              </DivVideo>
+              <VidesoDiv>
+                <UserImage src={video.title} alt="User" />
+                <Videoss>
+                  <VideoH3>{video.title}</VideoH3>
+                  <VideoA>{video.username}</VideoA>
+                  <VideoP>{video.explanation}</VideoP>
+                </Videoss>
+              </VidesoDiv>
+            </ServiceLi>
+          ))}
         </ServiceUl>
       </VideoDiv>
     </VideoContainer>
@@ -51,6 +64,16 @@ const VideoContainer = styled.div`
   height:100%;
   padding: 140px 0;
 `;
+
+const VideoThumbnail = styled.video`
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 1rem;
+  cursor: pointer;
+  background-position: bottom;
+  margin-bottom: 200px;
+`;
+
 const Videoh1 = styled.h1`
 `;
 
@@ -91,12 +114,11 @@ const ServiceLi = styled.li`
 `;
 const DivVideo = styled.div`
   width: 100%;
-  height: 250px;
+  height: 205px;
   display: block;
   border-radius: 1rem;
-  background:#fff;
   box-shadow: 2px 2px 2px #b2b2b2;
-  margin:10px 0;
+  margin: 10px 0;
 `;
 
 const VideoA = styled.a`
