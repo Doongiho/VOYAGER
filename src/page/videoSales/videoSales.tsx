@@ -4,14 +4,25 @@ import { Link, useNavigate } from 'react-router-dom';
 import { IVideo } from '../../types/IVideo';
 import { VideoSalesProps } from '../../types/VideoSalesProps';
 
-const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn, onDeleteVideo }) => {
-  const userVideoString = localStorage.getItem('formData');
-  const formData = userVideoString ? JSON.parse(userVideoString) : null;
+const VideoSales: React.FC<VideoSalesProps> = ({ videos, isLoggedIn, onDeleteVideo }) => {
   const navigate = useNavigate();
   const [deletingVideoId, setDeletingVideoId] = useState<string | null>(null);
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
   const userDataString = localStorage.getItem('userData');
   const userData = userDataString ? JSON.parse(userDataString) : null;
+  const [filteredVideoSales, setFilteredVideoSales] = useState<IVideo[]>([]);
+  const loggedInUserId = userData?.id;
+
+  useEffect(() => {
+    if (videos && loggedInUserId) {
+      const filteredVideos = videos.filter((video: IVideo) => video.id === loggedInUserId);
+      setFilteredVideoSales(filteredVideos);
+    }
+  }, [videos, loggedInUserId]);
+
+  console.log('userData:', userData);
+  console.log('videos:', videos);
+  console.log('filteredVideoSales:', filteredVideoSales);
 
   const handleVideoClick = (video: IVideo) => {
     navigate('/videoManagement', { state: { video } });
@@ -39,9 +50,6 @@ const VideoSales: React.FC<VideoSalesProps> = ({ videoSales, isLoggedIn, onDelet
       document.removeEventListener('mousedown', handleOutsideClick);
     };
   }, []);
-
-  const loggedInUserId = userData?.id;
-  const filteredVideoSales = videoSales.filter((video: IVideo) => video.id === loggedInUserId);
 
   return (
     <VideoContainer>
