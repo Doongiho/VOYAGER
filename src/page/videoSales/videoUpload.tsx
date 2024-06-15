@@ -22,21 +22,19 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
   const userData = userDataString ? JSON.parse(userDataString) : null;
 
   const onSubmit: SubmitHandler<IVideo> = data => {
-    if (!userData || !userData.id) {
-      console.error('User data or userId is missing.');
-      return;
-    }
-
     const formData: IVideo = {
       ...data,
       videoFile: videoFile,
       isValid: true,
       id: userData.id,
+      username: userData.username,
+      twitterImage: userData.twitterImage,
       videoStr: Math.random().toString(36).substring(7),
     };
 
-    const formDataString = JSON.stringify(formData);
-    localStorage.setItem('formData', formDataString);
+    const storedVideos = localStorage.getItem('videos');
+    const videos = storedVideos ? JSON.parse(storedVideos) : [];
+    localStorage.setItem('videos', JSON.stringify([...videos, formData]));
 
     onAddVideo(formData);
     reset();
@@ -73,7 +71,8 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
                   {videoUrl ? (
                     <VideoThumbnail
                       src={videoUrl}
-                      controls />
+                      controls
+                    />
                   ) : (
                     <UploadDiv>
                       <UploadImage src={ImageUpload} alt="upload" onClick={handleImageClick} />
