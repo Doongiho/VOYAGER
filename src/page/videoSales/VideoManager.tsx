@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import VideoUpload from './videoUpload';
 import VideoManagement from './videoSales';
-import { IFormInput } from '../../types/IFormInput';
+import { IVideo } from '../../types/IVideo';
 
 const VideoManager: React.FC = () => {
-    const [videoSales, setVideoSales] = useState<IFormInput[]>([]);
+    const [videoSales, setVideoSales] = useState<IVideo[]>([]);
     const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
-    const handleAddVideo = (newVideo: IFormInput) => {
+    const handleAddVideo = (newVideo: IVideo) => {
         setVideoSales([...videoSales, newVideo]);
     };
     const handleDelete = (videoId: string) => {
