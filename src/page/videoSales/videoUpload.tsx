@@ -3,26 +3,40 @@ import styled from 'styled-components';
 import ImageUpload from '../../assests/Upload.png';
 import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { IFormInput } from '../../types/IFormInput';
+import { IVideo } from '../../types/IVideo';
+
+
 
 interface VideoUploadProps {
-  onAddVideo: (newVideo: IFormInput) => void;
+  onAddVideo: (newVideo: IVideo) => void;
 }
 
+
 const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
-  const { register, handleSubmit, reset, formState: { isValid, errors } } = useForm<IFormInput>();
+  const { register, handleSubmit, reset, formState: { isValid, errors } } = useForm<IVideo>();
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
-  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [videoFile, setVideoFile] = useState<File | Blob | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const userDataString = localStorage.getItem('userData');
+  const userData = userDataString ? JSON.parse(userDataString) : null;
 
-  const onSubmit: SubmitHandler<IFormInput> = data => {
-    const formData: IFormInput = {
+  const onSubmit: SubmitHandler<IVideo> = data => {
+    if (!userData || !userData.id) {
+      console.error('User data or userId is missing.');
+      return;
+    }
+
+    const formData: IVideo = {
       ...data,
       videoFile: videoFile,
       isValid: true,
-      id: Math.random().toString(36).substring(7),
+      id: userData.id,
+      videoStr: Math.random().toString(36).substring(7),
     };
+
+    const formDataString = JSON.stringify(formData);
+    localStorage.setItem('formData', formDataString);
 
     onAddVideo(formData);
     reset();
@@ -30,6 +44,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
     setVideoFile(null);
     navigate('/videoSales');
   };
+
 
   const handleImageClick = () => {
     fileInputRef.current?.click();
