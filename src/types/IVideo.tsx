@@ -6,4 +6,5 @@ export interface IVideo {
     isValid: boolean;
     isLoggedIn: boolean;
     id: string;
+    videoStr: string;
 }
