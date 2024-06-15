@@ -17,47 +17,63 @@ import { IVideo } from './types/IVideo';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [videoSales, setVideoSales] = useState<IVideo[]>([]);
-  const [currentUser, setCurrentUser] = useState<{ id: number; username: string } | null>(null);
+  const [videos, setVideos] = useState<IVideo[]>([]);
+  const [filteredVideoSales, setFilteredVideoSales] = useState<IVideo[]>([]);
 
   useEffect(() => {
-    const storedVideoSales = localStorage.getItem('videoSales');
+    const userLoggedIn = localStorage.getItem('isLoggedIn');
+    if (userLoggedIn === 'true') {
+      setIsLoggedIn(true);
+    }
+    const storedVideos = localStorage.getItem('videos');
+    if (storedVideos) {
+      setVideos(JSON.parse(storedVideos));
+    }
   }, []);
+  useEffect(() => {
+    if (videos) {
+      setFilteredVideoSales(videos);
+    }
+  }, [videos]);
+
 
   const handleLogin = () => {
     setIsLoggedIn(true);
+    localStorage.setItem('isLoggedIn', 'true');
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
+    localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('userInfo');
   };
 
   const handleAddVideo = (newVideo: IVideo) => {
-    const updatedVideoSales = [...videoSales, newVideo];
-    setVideoSales(updatedVideoSales);
-    localStorage.setItem('videoSales', JSON.stringify(updatedVideoSales));
+    const updatedVideoSales = [...videos, newVideo];
+    setVideos(updatedVideoSales);
+    localStorage.setItem('videos', JSON.stringify(updatedVideoSales));
   };
 
   const handleDeleteVideo = (videoStr: string) => {
-    const updatedVideoSales = videoSales.filter(video => video.videoStr !== videoStr);
-    setVideoSales(updatedVideoSales);
-    localStorage.setItem('videoSales', JSON.stringify(updatedVideoSales));
+    const updatedVideoSales = videos.filter(video => video.videoStr !== videoStr);
+    setVideos(updatedVideoSales);
+    localStorage.setItem('videos', JSON.stringify(updatedVideoSales));
   };
+
 
   return (
     <div>
       <BrowserRouter>
         <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
         <Routes>
-          <Route path="/" element={<Video />} />
+          <Route path="/" element={<Video videos={filteredVideoSales} isLoggedIn={isLoggedIn} onDeleteVideo={handleDeleteVideo} />} />
           <Route path="/videoPurchase" element={<VideoPurchase />} />
           <Route path="/main" element={isLoggedIn ? <Main /> : <Navigate to="/login" />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
-          <Route path="/video" element={<Video />} />
+          <Route path="/video" element={<Video videos={filteredVideoSales} isLoggedIn={isLoggedIn} onDeleteVideo={handleDeleteVideo} />} />
           <Route
             path="/videoSales"
-            element={<VideoSales videoSales={videoSales} onDeleteVideo={handleDeleteVideo} isLoggedIn={isLoggedIn} />}
+            element={<VideoSales videos={videos} onDeleteVideo={handleDeleteVideo} isLoggedIn={isLoggedIn} />}
           />
           <Route path="/service" element={<Service />} />
           <Route path="/videoManagement" element={<VideoManagement />} />
