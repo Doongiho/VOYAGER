@@ -53,11 +53,12 @@ const VideoSales: React.FC<VideoSalesProps> = ({ videos, isLoggedIn, onDeleteVid
 
   return (
     <VideoContainer>
-      <VideoDiv>
         {!isLoggedIn ? (
+        <VideoDiv>
           <NotLoggedInMessage>로그인 후 동영상을 판매해보세요!</NotLoggedInMessage>
+          </VideoDiv>
         ) : (
-          <>
+          <VideoDivs>
             <VideoSale>
               <Videoh1>동영상 관리</Videoh1>
               <ExplanationButton>
@@ -100,56 +101,84 @@ const VideoSales: React.FC<VideoSalesProps> = ({ videos, isLoggedIn, onDeleteVid
                 </ServiceLi>
               ))}
             </ServiceUl>
-          </>
+          </VideoDivs>
         )}
-      </VideoDiv>
     </VideoContainer>
   );
 };
 
 
 const VideoDiv = styled.div`
+  color: #fff;
   flex-direction: column;
   width: 80%;
   margin: 0 auto;
   height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  text-align: center;
+  padding-top: 18vh;
+  padding-bottom: 104px;
 `;
+
+const VideoDivs = styled.div`
+  color: #fff;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 80vh;
+
+  @media screen and (max-width: 768px) {
+    margin-top: 0vh;
+  }
+`;
+
 const DivIcon = styled.span`
-    position: absolute;
-    right: 0px;
-    width: 10%;
-    top: 20px;
-}
+  position: absolute;
+  right: 0px;
+  width: 10%;
+  top: 20px;
 `;
+
 const DeleteButton = styled.button`
-       WIDTH: 83PX;
-    HEIGHT: 27PX;
-    MARGIN: 0 AUTO;
-    POSITION: ABSOLUTE;
-    RIGHT: 15PX;
-    TOP: 26PX;
-    BACKGROUND: #FFF;
-    FONT-WEIGHT: 600;
-    border-radius: 0.2rem;
-    font-family: "IBM Plex Sans KR", sans-serif;
-    CURSOR: POINTER;
-}
+  width: 83px;
+  height: 27px;
+  margin: 0 auto;
+  position: absolute;
+  right: 15px;
+  top: 26px;
+  background: #fff;
+  font-weight: 600;
+  border-radius: 0.2rem;
+  font-family: "IBM Plex Sans KR", sans-serif;
+  cursor: pointer;
 `;
 
 const Icon = styled.span`
-    font-size: 22px;
-    color: #7c7c7c;
-    CURSOR: POINTER
-}
+  font-size: 22px;
+  color: #7c7c7c;
+  cursor: pointer;
 `;
+
 const VideoContainer = styled.div`
   background-color: #202124;
+  width: 100vw;
   min-height: 100vh;
-  padding: 140px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20vh;;
+  text-align: center;
+  position: relative;
+  padding-bottom: 50px;
 
+  @media screen and (max-width: 768px) {
+    padding-top: 0;
+  }
 `;
 
 const VideoSale = styled.div`
@@ -161,6 +190,7 @@ const VideoSale = styled.div`
 const Videoh1 = styled.h1`
   text-align: left;
   color: #fff;
+  font-size: 1.7vw;
 `;
 
 const VideoThumbnail = styled.video`
@@ -173,18 +203,19 @@ const VideoThumbnail = styled.video`
 `;
 
 const ExplanationButton = styled.button`
-  width: 15%;
+  width: 12vw;
   border-radius: 1rem;
   border: 1px solid #907AE7;
   background: #907AE7;
   cursor: pointer;
-  padding: 12px;
   color: #fff;
   box-shadow: 2px 2px 2px #b2b2b2;
   font-size: 17px;
   font-weight: bolder;
   margin: auto 0;
-  height: 100%;
+  height: 5vh;
+  font-size: 1.2vw;
+
   &:hover {
     background-color: #8774d9;
   }
@@ -197,13 +228,25 @@ const ServiceUl = styled.ul`
   flex-wrap: wrap;
   width: 100%;
   padding: 0px;
+  justify-content: flex-start;
+  margin-top:90px;
+
+  @media screen and (max-width: 768px) {
+    justify-content: center;
+    margin:0px;
+  }
 `;
 
 const ServiceLi = styled.li`
-  width: 380px;
-  height: 380px;
+  width: 340px;
+  height: 340px;
   display: block;
-  margin: 30px 20px 0px 0px;
+  margin: 30px 44px 0 0;
+
+  @media screen and (max-width: 768px) {
+    margin:0px;
+    margin-top:20px;
+  }
 `;
 
 const DivVideo = styled.div`
@@ -215,30 +258,18 @@ const DivVideo = styled.div`
   margin: 10px 0;
 `;
 
+
 const VideoH3 = styled.h3`
-  font-size: 19px;
+  font-size: 1vw;
   margin-top: 12px;
-  margin-bottom: 0px;
-  color: #fff;
-  margin-bottom: 3px;
+  margin-bottom: 0px
+  color:#fff;
 `;
-const VideoA = styled.a`
-  font-size:12px;
-  color:#eee;
-  `;
 
 const VideoP = styled.p`
-  font-size: 12px;
+  font-size: 0.8vw;
   margin-top: 15px;
   color: #aeaeae;
-  margin-left: 2px;
-`;
-const UserImage = styled.img`
-    width: 40px;
-    height: 40px;
-    margin: 15px auto;
-    border-radius: 50%;
-  
 `;
 
 const Videoss = styled.div`
@@ -258,8 +289,10 @@ const VidesoDiv = styled.div`
 `;
 
 const NotLoggedInMessage = styled.h1`
-  margin-top: 150px;
   color: #fff;
+  text-align: center;
+  margin-top: 0;
 `;
+
 
 export default VideoSales;

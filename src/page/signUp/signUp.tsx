@@ -2,10 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import PostcodeModal from '../../components/modal/postCodeModal';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { IFormInput } from '../../types/IFormInput';
-
 
 const SignUp: React.FC = () => {
   const {
@@ -16,7 +14,6 @@ const SignUp: React.FC = () => {
     formState: { errors, isValid }
   } = useForm<IFormInput>();
 
-
   const navigate = useNavigate();
   const hiddenInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -25,6 +22,8 @@ const SignUp: React.FC = () => {
     return storedUserId ? parseInt(storedUserId, 10) : 1;
   });
 
+  const [base64Image, setBase64Image] = useState<string | null>(null);
+
   useEffect(() => {
     const storedUserId = localStorage.getItem('userId');
     if (storedUserId) {
@@ -32,17 +31,14 @@ const SignUp: React.FC = () => {
     }
   }, []);
 
-
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
     const newUserId = userId + 1;
     localStorage.setItem('userId', newUserId.toString());
 
-    const twitterImageName = watch('twitterImage') ? watch('twitterImage')!.name : null;
-
     const userData = {
       ...data,
       id: userId,
-      twitterImage: twitterImageName
+      twitterImage: base64Image,
     };
 
     localStorage.setItem('userData', JSON.stringify(userData));
@@ -70,12 +66,19 @@ const SignUp: React.FC = () => {
   const togglePasswordConfirmVisibility = () => {
     setShowPasswordConfirm((prevState) => !prevState);
   };
+
   const fileUploadHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setValue('twitterImage', file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setBase64Image(reader.result as string);
+        setValue('twitterImage', file);
+      };
+      reader.readAsDataURL(file);
     }
   };
+
   const handleComplete = (data: any) => {
     let fullAddress = '';
     let extraAddress = '';
@@ -91,7 +94,7 @@ const SignUp: React.FC = () => {
         extraAddress += data.bname;
       }
       if (data.buildingName !== '') {
-        extraAddress += extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+        extraAddress += extraAddress !== '' ? `, ${extraAddress}` : data.buildingName;
       }
       fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
     }
@@ -107,9 +110,11 @@ const SignUp: React.FC = () => {
   const handleButtonClick = () => {
     togglePostcodeModal();
   };
+
   const handleBackendError = (errorMessage: string) => {
     alert(errorMessage);
   };
+
   const handleProfileButtonClick = () => {
     if (hiddenInputRef.current) {
       hiddenInputRef.current.click();
@@ -117,120 +122,120 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div>
-      <SignUpContainer>
-        <SignUpDiv onSubmit={handleSubmit(onSubmit)}>
-          <SignUpTitle>회원가입</SignUpTitle>
-          <SignUpBox>
-            <P>프로필</P>
-            <ProfileDiv>
-              {watch('twitterImage') && <UserImage src={URL.createObjectURL(watch('twitterImage')!)} alt="프로필 이미지" />}
-              <ProfileButton htmlFor="twitterImage"><ProfileInput
+    <SignUpContainer>
+      <SignUpDiv onSubmit={handleSubmit(onSubmit)}>
+        <SignUpTitle>회원가입</SignUpTitle>
+        <SignUpBox>
+          <P>프로필</P>
+          <ProfileDiv>
+            {base64Image && (
+              <UserImage src={base64Image} alt="프로필 이미지" />
+            )}
+            <ProfileButton htmlFor="twitterImage">
+              <ProfileInput
                 type="file"
-                {...register("twitterImage", {
-                  required: true,
-                })}
+                {...register("twitterImage", { required: true })}
                 ref={(e) => {
                   hiddenInputRef.current = e;
                 }}
                 name="twitterImage"
                 onChange={fileUploadHandler}
-              ></ProfileInput>사진 선택</ProfileButton>
-            </ProfileDiv>
-            <P>이름</P>
+              />
+              사진 선택
+            </ProfileButton>
+          </ProfileDiv>
+          <P>이름</P>
+          <Div>
+            <DivIcon>
+              <Icon className="material-symbols-outlined">person</Icon>
+            </DivIcon>
+            <Input
+              type="text"
+              placeholder="이름을 입력해주세요."
+              id="name"
+              {...register("name", { required: true })}
+            />
+          </Div>
+          <P>닉네임</P>
+          <Div>
+            <DivIcon>
+              <Icon className="material-symbols-outlined">person</Icon>
+            </DivIcon>
+            <Input
+              type="text"
+              placeholder="닉네임을 입력해주세요."
+              id="username"
+              {...register("username", { required: true })}
+            />
+          </Div>
+          <SignUpAddressP>주소</SignUpAddressP>
+          <AddressDiv>
+            <PostcodeModal
+              isOpen={showPostcodeModal}
+              onComplete={handleComplete}
+              onRequestClose={togglePostcodeModal}
+            />
+            <AddressInput1
+              type="text"
+              id="sample6_postcode"
+              placeholder="우편번호"
+              {...register("location1", { required: true })}
+              readOnly
+            />
+            <AddressButton type="button" onClick={handleButtonClick}>
+              우편번호 찾기
+            </AddressButton>
+            <AddressInput2
+              type="text"
+              id="sample6_address"
+              placeholder="주소"
+              {...register("location2", { required: true })}
+              readOnly
+            />
+            <AddressInput3
+              type="text"
+              id="sample6_detailAddress"
+              placeholder="상세주소"
+              {...register("location3", { required: true })}
+            />
+            <AddressInput4
+              type="text"
+              id="sample6_extraAddress"
+              placeholder="참고항목"
+              {...register("location4", { required: true })}
+              readOnly
+            />
+          </AddressDiv>
+          <P>이메일</P>
+          <Div>
+            <DivIcon>
+              <Icon className="material-symbols-outlined">mail</Icon>
+            </DivIcon>
+            <Input
+              placeholder="이메일을 입력해주세요."
+              id="email"
+              {...register("email", {
+                required: true,
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "이메일 형식에 맞게 써주세요."
+                }
+              })}
+            />
+          </Div>
+          {errors.email && (
             <Div>
-              <DivIcon>
-                <Icon className="material-symbols-outlined">person</Icon>
-              </DivIcon>
-              <Input
-                type="text"
-                placeholder="이름을 입력해주세요."
-                id="name"
-                {...register("name", {
-                  required: true,
-                })}
-              />
+              <DivError>
+                <ErrorIcon className="material-symbols-outlined">error</ErrorIcon>
+              </DivError>
+              <ErrorP>
+                {errors.email.type === "pattern"
+                  ? '이메일 형식에 맞게 써주세요.'
+                  : '이메일을 입력해주세요.'}
+              </ErrorP>
             </Div>
-            <P>닉네임</P>
-            <Div>
-              <DivIcon>
-                <Icon className="material-symbols-outlined">person</Icon>
-              </DivIcon>
-              <Input
-                type="text"
-                placeholder="닉네임을 입력해주세요."
-                id="username"
-                {...register("username", {
-                  required: true,
-                })}
-              />
-            </Div>
-            <SignUpAddressP>주소</SignUpAddressP>
-            <AddressDiv>
-              <PostcodeModal
-                isOpen={showPostcodeModal}
-                onComplete={handleComplete}
-                onRequestClose={togglePostcodeModal}
-              />
-              <AddressInput1
-                type="text"
-                id="sample6_postcode"
-                placeholder="우편번호"
-                {...register("location1", { required: true })}
-                readOnly
-              />
-              <AddressButton type="button" onClick={handleButtonClick}>우편번호 찾기</AddressButton>
-              <AddressInput2
-                type="text"
-                id="sample6_address"
-                placeholder="주소"
-                {...register("location2", { required: true })}
-                readOnly
-              />
-              <AddressInput3
-                type="text"
-                id="sample6_detailAddress"
-                placeholder="상세주소"
-                {...register("location3", { required: true })}
-              />
-              <AddressInput4
-                type="text"
-                id="sample6_extraAddress"
-                placeholder="참고항목"
-                {...register("location4", { required: true })}
-                readOnly
-              />
-            </AddressDiv>
-            <P>이메일</P>
-            <Div>
-              <DivIcon>
-                <Icon className="material-symbols-outlined">mail</Icon>
-              </DivIcon>
-              <Input
-                placeholder="이메일을 입력해주세요."
-                id="email"
-                {...register("email", {
-                  required: true,
-                  pattern: {
-                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                    message: "이메일 형식에 맞게 써주세요."
-                  }
-                })}
-              />
-            </Div>
-            {errors.email && (
-              <Div>
-                <DivError>
-                  <ErrorIcon className="material-symbols-outlined">error</ErrorIcon>
-                </DivError>
-                <ErrorP>
-                  {errors.email.type === "pattern"
-                    ? '이메일 형식에 맞게 써주세요.'
-                    : '이메일을 입력해주세요.'}
-                </ErrorP>
-              </Div>
-            )}
-            <P>비밀번호</P>
+          )}
+          <P>비밀번호</P>
             <DivPass>
               <Div>
                 <DivIcon>
@@ -310,7 +315,6 @@ const SignUp: React.FC = () => {
           </SignUpBox>
         </SignUpDiv>
       </SignUpContainer>
-    </div>
   );
 };
 
@@ -321,10 +325,10 @@ const SignUpContainer = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
+  width: 100vw;
 `;
 const SignUpDiv = styled.form`
   background-color: #fff;
-  height: 100%;
   border-radius: 1rem;
   margin: 200px 0;
   padding: 1.5rem 2.5rem;
@@ -404,6 +408,7 @@ const Input = styled.input`
   padding: 0.7rem 1.5rem 0.6rem 2.875rem;
   border-radius: 1rem;
   font-size: 15px;
+
   &:focus {
     outline: none;
     border-color: #3b393973;
@@ -417,16 +422,15 @@ const Div = styled.div`
   width: 100%;
   margin-bottom:20px;
   text-align: left;
-}
 `;
+
 const DivPass = styled.div`
   width: 100%;
-}
 `;
+
 const DivIcon = styled.span`
   position: absolute;
   left: 1.0625rem;
-}
 `;
 
 const Icon = styled.span`
@@ -434,8 +438,6 @@ const Icon = styled.span`
   position: absolute;
   transform: translateY(-50%);
   color: #7c7c7c;
-
-}
 `;
 
 const LockIcon = styled.span`
@@ -444,14 +446,13 @@ const LockIcon = styled.span`
   top: 9px;
   right: 14px;
   color: #7c7c7c;  
-}
 `;
 
 const SignUpButton = styled.button<{ isValid: boolean }>`
   width: 100%;
   border-radius: 1rem;
   border: none;
- background-color: ${props => props.isValid ? '#907AE7' : '#00000012'};
+  background-color: ${props => props.isValid ? '#907AE7' : '#00000012'};
   color: ${props => props.isValid ? '#FFF' : '#555656'};
   padding: 0.6rem;
   font-weight: bolder;
@@ -461,23 +462,18 @@ const SignUpButton = styled.button<{ isValid: boolean }>`
   font-size: 15px;
   font-weight: bold;
   cursor: ${props => props.isValid ? 'pointer' : 'no-drop'};
-    
 `;
 
-
-
-
-
 const P = styled.p`
-color: #000000ed;
-font-weight: bolder;
-font-size:17px;
+  color: #000000ed;
+  font-weight: bolder;
+  font-size:17px;
 `;
 
 
 const SignUpAddressP = styled.p`
-color: #000000ed;
-font-weight: bolder;
+  color: #000000ed;
+  font-weight: bolder;
 `;
 
 
@@ -494,11 +490,13 @@ const AddressButton = styled.button`
   margin-right:6rem;
   font-size:15px;
   font-weight:bold;
+
   &:focus {
       outline: none;
       border-color: #3b393973;
   }
 `;
+
 const AddressInput1 = styled.input`
   width: 29%;
   border: 1px solid #00000012;
@@ -512,6 +510,7 @@ const AddressInput1 = styled.input`
   margin-bottom:20px;
   font-size:15px;
   font-weight:bold;
+
    &:focus {
       outline: none;
       border-color: #3b393973;
@@ -533,6 +532,7 @@ const AddressInput2 = styled.input`
   margin-bottom:20px;
   font-size:15px;
   font-weight:bold;
+
    &:focus {
       outline: none;
       border-color: #3b393973;
@@ -551,6 +551,7 @@ const AddressInput3 = styled.input`
   font-size:15px;
   font-size:15px;
   font-weight:bold;
+
   &:focus {
       outline: none;
       border-color: #3b393973;
@@ -570,6 +571,7 @@ const AddressInput4 = styled.input`
   font-size:15px;
   font-size:15px;
   font-weight:bold;
+  
    &:focus {
       outline: none;
       border-color: #3b393973;

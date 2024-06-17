@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Header from './components/header';
 import Main from './page/main/main';
 import Login from './page/login/login';
@@ -12,30 +12,24 @@ import VideoUpload from './page/videoSales/videoUpload';
 import MyPage from './page/myPage/myPage';
 import VideoManagement from './page/videoSales/videoManagement';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { IFormInput } from './types/IFormInput';
 import { IVideo } from './types/IVideo';
+import '../src/index.css';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [videos, setVideos] = useState<IVideo[]>([]);
-  const [filteredVideoSales, setFilteredVideoSales] = useState<IVideo[]>([]);
 
   useEffect(() => {
     const userLoggedIn = localStorage.getItem('isLoggedIn');
     if (userLoggedIn === 'true') {
       setIsLoggedIn(true);
     }
+
     const storedVideos = localStorage.getItem('videos');
     if (storedVideos) {
       setVideos(JSON.parse(storedVideos));
     }
   }, []);
-  useEffect(() => {
-    if (videos) {
-      setFilteredVideoSales(videos);
-    }
-  }, [videos]);
-
 
   const handleLogin = () => {
     setIsLoggedIn(true);
@@ -44,8 +38,11 @@ function App() {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('userInfo');
+    localStorage.clear(); 
+    localStorage.removeItem('videos'); 
+    localStorage.removeItem(''); 
+    localStorage.removeItem('userId'); 
+    localStorage.removeItem('userData'); 
   };
 
   const handleAddVideo = (newVideo: IVideo) => {
@@ -60,21 +57,17 @@ function App() {
     localStorage.setItem('videos', JSON.stringify(updatedVideoSales));
   };
 
-
   return (
     <div>
       <BrowserRouter>
         <Header isLoggedIn={isLoggedIn} onLogout={handleLogout} />
         <Routes>
-          <Route path="/" element={<Video videos={filteredVideoSales} isLoggedIn={isLoggedIn} onDeleteVideo={handleDeleteVideo} />} />
+          <Route path="/" element={<Video videos={videos} isLoggedIn={isLoggedIn} onDeleteVideo={handleDeleteVideo} />} />
           <Route path="/videoPurchase" element={<VideoPurchase />} />
-          <Route path="/main" element={isLoggedIn ? <Main /> : <Navigate to="/login" />} />
+          <Route path="/main" element={<Main />} />
           <Route path="/login" element={<Login onLogin={handleLogin} />} />
-          <Route path="/video" element={<Video videos={filteredVideoSales} isLoggedIn={isLoggedIn} onDeleteVideo={handleDeleteVideo} />} />
-          <Route
-            path="/videoSales"
-            element={<VideoSales videos={videos} onDeleteVideo={handleDeleteVideo} isLoggedIn={isLoggedIn} />}
-          />
+          <Route path="/video" element={<Video videos={videos} isLoggedIn={isLoggedIn} onDeleteVideo={handleDeleteVideo} />} />
+          <Route path="/videoSales" element={<VideoSales videos={videos} isLoggedIn={isLoggedIn} onDeleteVideo={handleDeleteVideo} />} />
           <Route path="/service" element={<Service />} />
           <Route path="/videoManagement" element={<VideoManagement />} />
           <Route path="/signUp" element={<SignUp />} />
