@@ -305,7 +305,7 @@ const SignUp: React.FC = () => {
             </DivPass>
             <SignUpButton
               type="submit"
-              isValid={isValid}
+              valid={isValid ? "true" : "false"} 
             >회원가입</SignUpButton>
           </SignUpBox>
         </SignUpDiv>
@@ -443,12 +443,13 @@ const LockIcon = styled.span`
   color: #7c7c7c;  
 `;
 
-const SignUpButton = styled.button<{ isValid: boolean }>`
+const SignUpButton = styled.button<{ valid: string}>`
   width: 100%;
   border-radius: 1rem;
   border: none;
-  background-color: ${props => props.isValid ? '#907AE7' : '#00000012'};
-  color: ${props => props.isValid ? '#FFF' : '#555656'};
+  background-color: ${props => props.valid === 'true' ? '#907AE7' : '#00000012'};
+  color: ${props => props.valid === 'true' ? '#FFF' : '#555656'};
+  cursor: ${props => props.valid === 'true' ? 'pointer' : 'no-drop'};
   padding: 0.6rem;
   font-weight: bolder;
   font-size: 17px;
@@ -456,7 +457,6 @@ const SignUpButton = styled.button<{ isValid: boolean }>`
   margin: 2rem 0;
   font-size: 15px;
   font-weight: bold;
-  cursor: ${props => props.isValid ? 'pointer' : 'no-drop'};
 `;
 
 const P = styled.p`
