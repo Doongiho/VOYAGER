@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import styled from "styled-components";
-import ImageGithub from "../../assets/github-6980894_640.png";
 import { IFormInput } from "../../types/IFormInput";
 
 interface LoginProps {
@@ -112,11 +111,6 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               </Link>
             </Button>
           </SpanButton>
-          <PasswordP>비밀번호 재설정</PasswordP>
-          <SpanSocial>
-            <GitHubImage src={ImageGithub} alt="Flash" />
-            <SocialLogin>깃허브로 간편 로그인하기</SocialLogin>
-          </SpanSocial>
         </LoginBox>
       </LoginDiv>
     </LoginContainer>
@@ -267,42 +261,6 @@ const ErrorP = styled.div`
   padding: 0rem 1rem 0rem 2.4rem;
   color: #f90;
   font-size: 15px;
-`;
-
-const SpanSocial = styled.span`
-  display: flex;
-  width: 100%;
-  text-align: center;
-  justify-content: space-between;
-  margin-top: 20px;
-`;
-
-const GitHubImage = styled.img`
-  display: block;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  width: 58px;
-  height: 55px;
-  margin-left: 0.5rem;
-`;
-
-const SocialLogin = styled.button`
-  width: 75%;
-  border-radius: 1rem;
-  margin-bottom: 20px;
-  border: 1px solid #717171;
-  background: #717171;
-  color: #fff;
-  font-weight: 600;
-  margin-top: 8px;
-  cursor: pointer;
-  box-shadow: 2px 2px 2px #b2b2b2;
-  padding: 0.5rem;
-  font-size: 15px;
-
-  &:hover {
-    background-color: #5a5858;
-  }
 `;
 
 export default Login;
