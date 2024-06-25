@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
-
 import ImageGithub from '../../assets/github-6980894_640.png';
 import { IFormInput } from '../../types/IFormInput';
 
@@ -17,24 +16,29 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-        const storedUserInfo = localStorage.getItem('userData');
-
+        const storedUserInfo = localStorage.getItem("userData");
+    
         if (storedUserInfo) {
-            const userData: IFormInput = JSON.parse(storedUserInfo);
-            if (data.email === userData.email && data.password === userData.password) {
-                onLogin();
-                navigate('/main');
-            } else {
-                setErrorMessage('이메일 또는 비밀번호를 다시 확인하세요.');
-            }
+          const userData: IFormInput[] = JSON.parse(storedUserInfo);
+          const user = userData.find(
+            (user) => user.email === data.email && user.password === data.password
+          );
+    
+          if (user) {
+            onLogin();
+            localStorage.setItem("loggedInUser", data.email);
+            navigate("/main");
+          } else {
+            setErrorMessage("이메일 또는 비밀번호를 다시 확인하세요.");
+          }
         } else {
-            setErrorMessage('등록된 사용자 정보가 없습니다.');
+          setErrorMessage("등록된 사용자 정보가 없습니다.");
         }
-    };
-
-    const togglePasswordVisibility = () => {
+      };
+    
+      const togglePasswordVisibility = () => {
         setShowPassword((prevState) => !prevState);
-    };
+      };
 
     return (
     <LoginContainer>
