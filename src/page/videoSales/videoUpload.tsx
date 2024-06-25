@@ -4,7 +4,7 @@ import ImageUpload from '../../assets/Upload.png';
 import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { IVideo } from '../../types/IVideo';
-
+import FileUpload from "./FileUpload";
 
 
 interface VideoUploadProps {
@@ -13,7 +13,7 @@ interface VideoUploadProps {
 
 
 const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
-  const { register, handleSubmit, reset, formState: { isValid, errors } } = useForm<IVideo>();
+  const { register, handleSubmit, reset, setValue, formState: { isValid, errors } } = useForm<IVideo>();
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
   const [videoFile, setVideoFile] = useState<File | Blob | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -47,13 +47,11 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      const url = URL.createObjectURL(file);
-      setVideoUrl(url);
-      setVideoFile(file);
-    }
+  const handleFileChange = (file: File) => {
+    const url = URL.createObjectURL(file);
+    setVideoUrl(url);
+    setVideoFile(file);
+    setValue("videoUrl", url);
   };
 
   return (
@@ -68,20 +66,9 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
                 </ExplanationLi1>
                 <ExplanationLis>
                   {videoUrl ? (
-                    <VideoThumbnail
-                      src={videoUrl}
-                      controls
-                    />
+                    <VideoThumbnail src={videoUrl} controls />
                   ) : (
-                    <UploadDiv>
-                      <UploadImage src={ImageUpload} alt="upload" onClick={handleImageClick} />
-                      <HiddenFileInput
-                        type="file"
-                        accept="video/*"
-                        ref={fileInputRef}
-                        onChange={handleFileChange}
-                      />
-                    </UploadDiv>
+                    <FileUpload onChange={handleFileChange} />
                   )}
                 </ExplanationLis>
               </ExplanationUl>
