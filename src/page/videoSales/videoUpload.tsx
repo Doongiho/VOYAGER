@@ -25,7 +25,6 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
     const formData: IVideo = {
       ...data,
       videoFile: videoFile,
-      isValid: true,
       id: userData.id,
       username: userData.username,
       twitterImage: userData.twitterImage,
@@ -138,10 +137,12 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
                   </DivIcons>
                 )}
                 <ExplanationLi>
-                  <ExplanationButton
-                    isValid={isValid && videoUrl !== null}
-                    type="submit"
-                    disabled={!isValid || videoUrl === null}>저장하기</ExplanationButton>
+                <ExplanationButton
+                  valid={isValid && videoUrl !== null ? "true" : "false"}
+                  type="submit"
+                  disabled={!isValid || videoUrl === null}>
+                  저장하기
+                </ExplanationButton>
                 </ExplanationLi>
               </ExplanationUl>
             </form>
@@ -226,7 +227,7 @@ const DivIcons = styled.div`
   margin-left: 20px;
 `;
 
-const ExplanationButton = styled.button<{ isValid: boolean }>`
+const ExplanationButton = styled.button<{ valid: string  }>`
   border-radius: 1rem;
   border: 1px solid #00000012;
   padding: 1vh 1vw;
@@ -237,9 +238,9 @@ const ExplanationButton = styled.button<{ isValid: boolean }>`
   width: 22.2vw;
   margin-bottom: 0.5vh;
   margin-top: 5.5vh;
-  background-color: ${props => props.isValid ? '#907AE7' : '#00000012'};
-  color: ${props => props.isValid ? '#FFF' : '#555656'};
-  cursor: ${props => props.isValid ? 'pointer' : 'no-drop'};
+  background-color:  ${props => props.valid === 'true' ?  '#907AE7' : '#00000012'};
+  color: ${props => props.valid === 'true' ?  '#FFF' : '#555656'};
+  cursor: ${props => props.valid === 'true' ?  'pointer' : 'no-drop'};
   
   @media screen and (max-width: 768px) {
     margin-top:20px;

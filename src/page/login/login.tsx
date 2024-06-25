@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
 import styled from 'styled-components';
 
 import ImageGithub from '../../assets/github-6980894_640.png';
@@ -85,7 +84,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 <SpanButton>
                     <LoginButton
                         type="submit"
-                        isValid={isValid}>
+                        valid={isValid ? "true" : "false"} >
                         로그인하기
                     </LoginButton>
                     <Button><Link to="/signUp" style={{
@@ -210,7 +209,7 @@ const Button = styled.button`
         background-color: #8774d9;
     }
 `;
-const LoginButton = styled.button<{ isValid: boolean }>`
+const LoginButton = styled.button<{  valid: string }>`
     width: 48%;
     border-radius: 1rem;
     border: none;
@@ -220,9 +219,9 @@ const LoginButton = styled.button<{ isValid: boolean }>`
     font-weight: bolder;
     font-size: 17px;
     box-shadow: 2px 2px 2px #b2b2b2;
-    background-color: ${props => props.isValid ? '#907AE7' : '#00000012'};
-    color: ${props => props.isValid ? '#FFF' : '#555656'};
-    cursor: ${props => props.isValid ? 'pointer' : 'no-drop'};
+    background-color: ${props => props.valid === 'true' ? '#907AE7' : '#00000012'};
+    color: ${props => props.valid === 'true' ? '#FFF' : '#555656'};
+    cursor: ${props => props.valid === 'true' ? 'pointer' : 'no-drop'};
 `;
 
 
