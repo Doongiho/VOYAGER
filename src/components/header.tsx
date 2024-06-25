@@ -8,6 +8,11 @@ interface HeaderProps {
   onLogout: () => void;
 }
 
+interface IsOpenProps {
+  isopen: string;
+}
+
+
 const Header: React.FC<HeaderProps> = ({ isLoggedIn, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -31,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ isLoggedIn, onLogout }) => {
           <div />
           <div />
         </MenuIcon>
-        <HeaderUl isOpen={isMenuOpen}>
+        <HeaderUl isopen={isMenuOpen.toString()}>
           {isLoggedIn ? (
             <HeaderLi>
               <EnbUl>
@@ -113,9 +118,9 @@ const HeaderDiv = styled.header`
 `;
 
 
-const HeaderUl = styled.ul<{ isOpen: boolean }>`
+const HeaderUl = styled.ul<IsOpenProps>`
   list-style-type: none;
-  display: ${({ isOpen }) => (isOpen ? 'block' : 'none')};
+  display: ${({ isopen }) => (isopen === 'true' ? 'block' : 'none')}; 
   position: absolute;
   top: 50px;
   right: 0;
