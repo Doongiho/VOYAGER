@@ -322,12 +322,14 @@ const SignUpContainer = styled.div`
   text-align: center;
   width: 100vw;
 `;
+
 const SignUpDiv = styled.form`
   background-color: #fff;
   border-radius: 1rem;
   margin: 200px 0;
   padding: 1.5rem 2.5rem;
 `;
+
 const SignUpBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -338,34 +340,38 @@ const SignUpBox = styled.div`
 `;
 
 const SignUpTitle = styled.h1`
-  font-size:27px;
-  font-weight:bolder;
+  font-size: 27px;
+  font-weight: 700;
   margin-bottom: 2rem;
 `;
+
 const UserImage = styled.img`
   width: 100px;
   height: 100px;
   border: 2px solid #00000012;
-  margin:0 auto;
+  margin: 0 auto;
   border-radius: 50%;
 `;
+
 const ProfileButton = styled.label`
   display: inline-block;
   padding: 0.5rem 1rem;
-  background-color: #907AE7;
-  color: #FFF;
+  background-color: #907ae7;
+  color: #fff;
   border: none;
   border-radius: 0.5rem;
   position: relative;
   cursor: pointer;
   margin: 20px 0;
 `;
+
 const ProfileDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
 `;
+
 const ProfileInput = styled.input`
   position: absolute;
   width: 100%;
@@ -373,30 +379,30 @@ const ProfileInput = styled.input`
   opacity: 0;
   cursor: pointer;
 `;
+
 const DivError = styled.span`
   position: absolute;
   left: 0.6rem;
-}
 `;
+
 const ErrorP = styled.div`
   padding: 0rem 1rem 0rem 2.4rem;
-  color:#F90;
-  font-size:15px;
-
+  color: #f90;
+  font-size: 15px;
 `;
+
 const ErrorIcon = styled.div`
   font-size: 21px;
   position: absolute;
   transform: translateY(-50%);
-  color: #F90;
-
-
+  color: #f90;
 `;
+
 const Input = styled.input`
   border: 1px solid #00000012;
   background: #00000012;
   color: #555656;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
   width: 100%;
@@ -415,7 +421,7 @@ const Div = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  margin-bottom:20px;
+  margin-bottom: 20px;
   text-align: left;
 `;
 
@@ -440,7 +446,7 @@ const LockIcon = styled.span`
   cursor: pointer;
   top: 9px;
   right: 14px;
-  color: #7c7c7c;  
+  color: #7c7c7c;
 `;
 
 const SignUpButton = styled.button<{ valid: string}>`
@@ -451,44 +457,42 @@ const SignUpButton = styled.button<{ valid: string}>`
   color: ${props => props.valid === 'true' ? '#FFF' : '#555656'};
   cursor: ${props => props.valid === 'true' ? 'pointer' : 'no-drop'};
   padding: 0.6rem;
-  font-weight: bolder;
-  font-size: 17px;
+  font-weight: 600;
+  font-size: 15px;
   box-shadow: 2px 2px 2px #b2b2b2;
   margin: 2rem 0;
-  font-size: 15px;
-  font-weight: bold;
 `;
 
 const P = styled.p`
   color: #000000ed;
-  font-weight: bolder;
-  font-size:17px;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 10px 0;
 `;
-
 
 const SignUpAddressP = styled.p`
   color: #000000ed;
-  font-weight: bolder;
+  font-weight: 600;
+  margin: 10px 0;
+  font-size: 16px;
 `;
-
 
 const AddressButton = styled.button`
   width: 34%;
   border: 1px solid #b2b2b2;
-  background: #F9F8F8;
+  background: #f9f8f8;
   color: #7c7c7c;
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
   border-radius: 1rem;
-  margin-bottom:20px;
-  font-size:15px;
-  margin-right:6rem;
-  font-size:15px;
-  font-weight:bold;
+  margin-bottom: 20px;
+  margin-right: 6rem;
+  font-size: 15px;
+  font-weight: 600;
 
   &:focus {
-      outline: none;
-      border-color: #3b393973;
+    outline: none;
+    border-color: #3b393973;
   }
 `;
 
@@ -501,18 +505,15 @@ const AddressInput1 = styled.input`
   box-shadow: 2px 2px 2px #b2b2b2;
   padding: 0.6rem;
   border-radius: 1rem;
-  font-size:15px;
-  margin-bottom:20px;
-  font-size:15px;
-  font-weight:bold;
+  margin-bottom: 20px;
+  font-size: 15px;
+  font-weight: 600;
 
-   &:focus {
-      outline: none;
-      border-color: #3b393973;
+  &:focus {
+    outline: none;
+    border-color: #3b393973;
   }
-
 `;
-
 
 const AddressInput2 = styled.input`
   width: 100%;
@@ -523,14 +524,13 @@ const AddressInput2 = styled.input`
   box-shadow: 2px 2px 2px #b2b2b2;
   padding: 0.6rem;
   border-radius: 1rem;
-  font-size:15px;
-  margin-bottom:20px;
-  font-size:15px;
-  font-weight:bold;
+  margin-bottom: 20px;
+  font-size: 15px;
+  font-weight: 600;
 
-   &:focus {
-      outline: none;
-      border-color: #3b393973;
+  &:focus {
+    outline: none;
+    border-color: #3b393973;
   }
 `;
 
@@ -543,15 +543,13 @@ const AddressInput3 = styled.input`
   box-shadow: 2px 2px 2px #b2b2b2;
   padding: 0.6rem;
   border-radius: 1rem;
-  font-size:15px;
-  font-size:15px;
-  font-weight:bold;
+  font-size: 15px;
+  font-weight: 600;
 
   &:focus {
-      outline: none;
-      border-color: #3b393973;
+    outline: none;
+    border-color: #3b393973;
   }
- 
 `;
 
 const AddressInput4 = styled.input`
@@ -563,15 +561,13 @@ const AddressInput4 = styled.input`
   box-shadow: 2px 2px 2px #b2b2b2;
   padding: 0.6rem;
   border-radius: 1rem;
-  font-size:15px;
-  font-size:15px;
-  font-weight:bold;
-  
-   &:focus {
-      outline: none;
-      border-color: #3b393973;
+  font-size: 15px;
+  font-weight: 600;
+
+  &:focus {
+    outline: none;
+    border-color: #3b393973;
   }
-  
 `;
 
 const AddressDiv = styled.div`
@@ -581,6 +577,4 @@ const AddressDiv = styled.div`
   margin-bottom: 2rem;
 `;
 
-
-
-export default SignUp
+export default SignUp;
