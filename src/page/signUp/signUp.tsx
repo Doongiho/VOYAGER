@@ -35,17 +35,22 @@ const SignUp: React.FC = () => {
     const newUserId = userId + 1;
     localStorage.setItem('userId', newUserId.toString());
 
-    const userData = {
+    const storedUsers = localStorage.getItem("userData");
+    const userData = storedUsers ? JSON.parse(storedUsers) : [];
+
+    const newUser = {
       ...data,
-      id: userId,
+      id: newUserId,
       twitterImage: base64Image,
     };
 
-    localStorage.setItem('userData', JSON.stringify(userData));
-    localStorage.setItem('isLoggedIn', 'true');
+    const updatedUsers = [...userData, newUser];
 
-    alert('회원가입이 완료되었습니다.');
-    navigate('/');
+    localStorage.setItem("userData", JSON.stringify(updatedUsers));
+    localStorage.setItem("isLoggedIn", "true");
+
+    alert("회원가입이 완료되었습니다.");
+    navigate("/");
   }
 
   const password = useRef<string>();
@@ -109,16 +114,6 @@ const SignUp: React.FC = () => {
 
   const handleButtonClick = () => {
     togglePostcodeModal();
-  };
-
-  const handleBackendError = (errorMessage: string) => {
-    alert(errorMessage);
-  };
-
-  const handleProfileButtonClick = () => {
-    if (hiddenInputRef.current) {
-      hiddenInputRef.current.click();
-    }
   };
 
   return (
@@ -202,7 +197,7 @@ const SignUp: React.FC = () => {
               type="text"
               id="sample6_extraAddress"
               placeholder="참고항목"
-              {...register("location4", { required: true })}
+              {...register("location4")}
               readOnly
             />
           </AddressDiv>
