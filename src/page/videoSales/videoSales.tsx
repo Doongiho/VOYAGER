@@ -8,21 +8,26 @@ const VideoSales: React.FC<VideoSalesProps> = ({ videos, isLoggedIn, onDeleteVid
   const navigate = useNavigate();
   const [deletingVideoId, setDeletingVideoId] = useState<string | null>(null);
   const deleteButtonRef = useRef<HTMLButtonElement>(null);
-  const userDataString = localStorage.getItem('userData');
-  const userData = userDataString ? JSON.parse(userDataString) : null;
   const [filteredVideoSales, setFilteredVideoSales] = useState<IVideo[]>([]);
-  const loggedInUserId = userData?.id;
+  const loggedInUserEmail = localStorage.getItem('loggedInUser');
+  const allUsersDataString = localStorage.getItem('userData');
+
+  let userData = null;
+  if (allUsersDataString) {
+    try {
+      const allUsersData = JSON.parse(allUsersDataString);
+      userData = allUsersData.find((user: any) => user.email === loggedInUserEmail);
+    } catch (error) {
+      console.error('Failed to parse user data from localStorage:', error);
+    }
+  }
 
   useEffect(() => {
-    if (videos && loggedInUserId) {
-      const filteredVideos = videos.filter((video: IVideo) => video.id === loggedInUserId);
+    if (videos && loggedInUserEmail) {
+      const filteredVideos = videos.filter((video: IVideo) => video.useremail === loggedInUserEmail);
       setFilteredVideoSales(filteredVideos);
     }
-  }, [videos, loggedInUserId]);
-
-  console.log('userData:', userData);
-  console.log('videos:', videos);
-  console.log('filteredVideoSales:', filteredVideoSales);
+  }, [videos, loggedInUserEmail]);
 
   const handleVideoClick = (video: IVideo) => {
     navigate('/videoManagement', { state: { video } });
