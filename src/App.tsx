@@ -38,11 +38,6 @@ function App() {
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    localStorage.clear(); 
-    localStorage.removeItem('videos'); 
-    localStorage.removeItem(''); 
-    localStorage.removeItem('userId'); 
-    localStorage.removeItem('userData'); 
   };
 
   const handleAddVideo = (newVideo: IVideo) => {
