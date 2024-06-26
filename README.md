@@ -24,5 +24,7 @@ feat	새로운 기능 추가 <br>
 fix	버그 수정<br>
 design	사용자 UI 디자인 변경 (CSS 등)<br>
 refactor	코드 리팩토링<br>
-
+<br>
+<h3>디자인</h3>
+[Untitled.pdf](https://github.com/user-attachments/files/15988266/Untitled.pdf)
 
