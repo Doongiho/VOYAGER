@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
-import ImageUpload from '../../assets/Upload.png';
 import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { IVideo } from '../../types/IVideo';
@@ -173,7 +172,7 @@ const VideoContainer = styled.div`
 
 const ErrorP = styled.div`
   padding: 0rem 1rem 0rem 2.4rem;
-  color: #F90;
+  color: #f90;
   font-size: 1vw;
 `;
 
@@ -183,7 +182,7 @@ const Videoh1 = styled.h1`
   font-weight: 700;
 
   @media screen and (max-width: 768px) {
-    text-align:center;
+    text-align: center;
   }
 `;
 
@@ -236,7 +235,7 @@ const ErrorIcon = styled.div`
   font-size: 1.2vw;
   position: absolute;
   transform: translateY(-50%);
-  color: #F90;
+  color: #f90;
   top: 12px;
 `;
 
@@ -250,7 +249,7 @@ const Input = styled.input`
   width: 20.5vw;
   padding: 1vh 0.7vw;
   border-radius: 1rem;
-  font-size:1vw;
+  font-size: 1vw;
 
   &:focus {
     outline: none;
@@ -298,15 +297,14 @@ const DivVideo = styled.div`
   }
 `;
 
-const ExplanationUl = styled.ul`
 
-`;
+const ExplanationUl = styled.ul``;
 
 const ExplanationLi = styled.li`
   list-style-type: none;
   display: flex;
   color: #565656;
-  font-size: 1.2vw;    
+  font-size: 1.2vw;
   width: 22vw;
   flex-direction: column;
   margin: 3px auto;
@@ -329,7 +327,7 @@ const ExplanationLis = styled.li`
 `;
 
 const ExplanationP = styled.p`
-  margin-top: 2vh;
+  margin: 3vh 0;
 `;
 
 export default VideoUpload;
