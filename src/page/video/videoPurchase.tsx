@@ -1,22 +1,114 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import { IVideo } from '../../types/IVideo';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import styled from "styled-components";
+import { IVideo } from "../../types/IVideo";
+import { useForm } from "react-hook-form";
+import { loadStripe } from "@stripe/stripe-js";
+import {
+  Elements,
+  CardElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+
+const stripePromise = loadStripe(
+  "pk_test_51PTTu7Bdb1iZIk3yCfcyMRpGtPkSWHIF771pzpgsfyW7lk9xeA8pWUOaBdBWYhSibyC9u3Ag0fuoHkJdJSN2gx2J00MKTUlDvn"
+);
+
+const CheckoutForm: React.FC<{ amount: number; onSuccess: () => void }> = ({
+  amount,
+  onSuccess,
+}) => {
+  const stripe = useStripe();
+  const elements = useElements();
+  const [error, setError] = useState<string | null>(null);
+  const [processing, setProcessing] = useState(false);
+  const [succeeded, setSucceeded] = useState(false);
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    setProcessing(true);
+
+    try {
+      const response = await fetch(
+        "http://localhost:3001/create-payment-intent",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ amount }),
+        }
+      );
+
+      const paymentIntent = await response.json();
+
+      if (response.ok) {
+        const { error: stripeError, paymentIntent: stripePaymentIntent } =
+          await stripe.confirmCardPayment(paymentIntent.clientSecret, {
+            payment_method: {
+              card: elements.getElement(CardElement)!,
+            },
+          });
+
+        if (stripeError) {
+          setError(stripeError.message ?? "An unknown error occurred");
+          setProcessing(false);
+          return;
+        }
+
+        setSucceeded(true);
+        setProcessing(false);
+        onSuccess();
+      } else {
+        setError(
+          "An error occurred while processing your payment. Please try again."
+        );
+        setProcessing(false);
+      }
+    } catch (error) {
+      setError(
+        "An error occurred while processing your payment. Please try again."
+      );
+      setProcessing(false);
+    }
+  };
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <StyledCardElement />
+      <StyledButton disabled={processing || succeeded} type="submit">
+        {processing ? "Processing…" : "구매하기"}
+      </StyledButton>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      {succeeded && (
+        <SuccessMessage>결제가 성공적으로 완료되었습니다!</SuccessMessage>
+      )}
+    </Form>
+  );
+};
 
 const VideoPurchase: React.FC = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const video = location.state?.video as IVideo;
 
-  const [uploaderProfileImage, setUploaderProfileImage] = useState<string | null>(null);
+  const [uploaderProfileImage, setUploaderProfileImage] = useState<
+    string | null
+  >(null);
+  const [downloadLink, setDownloadLink] = useState<string | null>(null); 
 
   useEffect(() => {
-    const storedUserData = localStorage.getItem('userData');
+    const storedUserData = localStorage.getItem("userData");
     if (storedUserData) {
-      const userData = JSON.parse(storedUserData);
-      if (userData.username === video.username) {
-        setUploaderProfileImage(userData.twitterImage);
+      const userData: any[] = JSON.parse(storedUserData);
+      const currentUser = userData.find(
+        (user) => user.username === video.username
+      );
+      if (currentUser) {
+        setUploaderProfileImage(currentUser.twitterImage);
       }
     }
   }, [video.username]);
@@ -29,51 +121,179 @@ const VideoPurchase: React.FC = () => {
     },
   });
 
+  const handleDownloadWithWatermark = () => {
+    if (video.videoFile instanceof Blob) {
+      const videoUrl = URL.createObjectURL(video.videoFile);
+      const videoElement = document.createElement("video");
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      videoElement.src = videoUrl;
+      videoElement.preload = "metadata"; 
+      videoElement.addEventListener("loadedmetadata", () => {
+        canvas.width = videoElement.videoWidth;
+        canvas.height = videoElement.videoHeight;
+
+        if (ctx) {
+          ctx.drawImage(videoElement, 0, 0);
+
+          
+          ctx.font = "24px Arial";
+          ctx.fillStyle = "rgba(255, 0, 0, 0.8)"; 
+         
+          ctx.textAlign = "center";
+          ctx.fillText("voyager", canvas.width / 2, canvas.height - 50); 
+
+         
+          canvas.toBlob((blob) => {
+            if (blob) {
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = `${video.title}_watermarked.mp4`; 
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url); 
+            } else {
+              console.error("Failed to create blob.");
+              alert("다운로드 링크 생성 실패.");
+            }
+          }, "video/mp4");
+        } else {
+          console.error("Failed to get 2d context for canvas.");
+          alert("Canvas 컨텍스트를 가져오는 데 실패했습니다.");
+        }
+      });
+
+     
+      videoElement.load();
+    }
+  };
+
+  const handleDownload = () => {
+    if (downloadLink) {
+      window.open(downloadLink, "_blank");
+    }
+  };
+
+  const handlePaymentSuccess = () => {
+    if (video.videoFile instanceof Blob) {
+      const url = URL.createObjectURL(video.videoFile);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${video.title}.mp4`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  };
+
   return (
-    <VideoContainer>
-      <VideoDiv>
-        <Div>
-          <PurchaseDiv>
+    <Elements stripe={stripePromise}>
+      <VideoContainer>
+        <VideoDiv>
+          <Div>
+            <PurchaseDiv>
               <ExplanationLi1>
                 <Videoh1>동영상 구매</Videoh1>
               </ExplanationLi1>
               <DivVideo>
-                  {video.videoFile instanceof Blob && (
-                    <VideoThumbnail src={URL.createObjectURL(video.videoFile)} />
-                  )}
-            </DivVideo>
+                {video.videoFile instanceof Blob && (
+                  <VideoThumbnail
+                    src={URL.createObjectURL(video.videoFile)}
+                    controls
+                    controlsList="nodownload"
+                  />
+                )}
+              </DivVideo>
               <VidesoDiv>
-                {uploaderProfileImage && <UserImage src={uploaderProfileImage} alt="User" />}
+                {uploaderProfileImage && (
+                  <UserImage src={uploaderProfileImage} alt="User" />
+                )}
                 <Videoss>
                   <VideoH3>{video.title}</VideoH3>
                   <VideoA>{video.username}</VideoA>
                   <VideoP>{video.explanation}</VideoP>
                 </Videoss>
               </VidesoDiv>
-          </PurchaseDiv>
-          <ExplanationDiv>
-            <ExplanationUl>
-              <ExplanationLi3>
-                <ExplanationP>워터마크 있는 채로</ExplanationP>
-                <ExplanationButton>무료 다운로드</ExplanationButton>
-              </ExplanationLi3>
-              <ExplanationLi2>
-                <ExplanationP>
-                  <ColoredText>구매 혜택:</ColoredText> 워터마크 제거, 고화질 영상
-                </ExplanationP>
-              </ExplanationLi2>
-              <ExplanationLi3>
-                <ExplanationP>{video.price}₩</ExplanationP>
-                <ExplanationButton>구매하기</ExplanationButton>
-              </ExplanationLi3>
-            </ExplanationUl>
-          </ExplanationDiv>
-        </Div>
-      </VideoDiv>
-    </VideoContainer>
+            </PurchaseDiv>
+            <ExplanationDiv>
+              <ExplanationUl>
+                <ExplanationLi3>
+                  <ExplanationP>워터마크 있는 채로</ExplanationP>
+                  <ExplanationButton onClick={handleDownloadWithWatermark}>
+                    무료 다운로드
+                  </ExplanationButton>
+                </ExplanationLi3>
+                <ExplanationLi2>
+                  <ExplanationP>
+                    <ColoredText>구매 혜택:</ColoredText> 워터마크 제거, 고화질
+                    영상
+                  </ExplanationP>
+                </ExplanationLi2>
+                <ExplanationLi3>
+                  <ExplanationP>{video.price}₩</ExplanationP>
+                  <CheckoutForm
+                    amount={video.price}
+                    onSuccess={handlePaymentSuccess}
+                  />
+                  {downloadLink && (
+                    <StyledButton onClick={handleDownload}>
+                      구매 완료 후 다운로드
+                    </StyledButton>
+                  )}
+                </ExplanationLi3>
+              </ExplanationUl>
+            </ExplanationDiv>
+          </Div>
+        </VideoDiv>
+      </VideoContainer>
+    </Elements>
   );
 };
 
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  margin: 2vw auto;
+`;
+
+const StyledCardElement = styled(CardElement)`
+  width: 100%;
+  padding: 15px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-bottom: 20px;
+`;
+
+const StyledButton = styled.button`
+  background-color: #907ae7;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+
+  &:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  margin-top: 20px;
+`;
+
+const SuccessMessage = styled.div`
+  color: green;
+  margin-top: 20px;
+`;
 
 const VideoDiv = styled.div`
   flex-direction: column;
@@ -84,7 +304,7 @@ const VideoDiv = styled.div`
   align-items: center;
 
   @media screen and (max-width: 768px) {
-   padding-top: 100px;
+    padding-top: 100px;
   }
 `;
 
@@ -105,11 +325,11 @@ const Videoh1 = styled.h1`
   text-align: left;
   font-size: 1.7vw;
   font-weight: 700;
-  color:#fff;
+  color: #fff;
   margin-bottom: 50px;
 
   @media screen and (max-width: 768px) {
-    text-align:center;
+    text-align: center;
     text-align: center;
   }
 `;
@@ -136,7 +356,6 @@ const PurchaseDiv = styled.div`
     margin-bottom: 60px;
   }
 `;
-
 
 const ExplanationDiv = styled.div`
   width: 38%;
@@ -172,7 +391,7 @@ const VideoThumbnail = styled.video`
 `;
 
 const VideoA = styled.a`
-  font-size:0.7vw;    
+  font-size: 0.7vw;
   color: #c2c2c2;
 `;
 
@@ -187,6 +406,7 @@ const VideoP = styled.p`
   font-size: 0.8vw;
   margin-top: 15px;
   color: #c2c2c2;
+  
   @media screen and (max-width: 768px) {
     margin-top: 5px;
   }
@@ -198,8 +418,6 @@ const UserImage = styled.img`
   margin: 15px auto;
   border-radius: 50%;
 `;
-
-
 
 const Videoss = styled.div`
   display: flex;
@@ -223,13 +441,13 @@ const VidesoDiv = styled.div`
 `;
 
 const ExplanationUl = styled.ul`
+  margin:20px 0;
 `;
-
 
 const ExplanationLi1 = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;    
+  justify-content: space-between;
   padding: 20px 20px;
 
   @media screen and (max-width: 768px) {
@@ -237,6 +455,7 @@ const ExplanationLi1 = styled.div`
     padding: 0px;
   }
 `;
+
 const ExplanationLi2 = styled.li`
   list-style-type: none;
   padding: 30px 20px 15px 20px;
@@ -250,18 +469,19 @@ const ExplanationLi2 = styled.li`
     margin-bottom: 0px;
   }
 `;
+
 const ExplanationLi3 = styled.li`
   list-style-type: none;
-  padding:20px 20px 0px 20px;
-  display:flex;
-  font-size:1.2vw;
+  padding: 20px 20px 0px 20px;
+  display: flex;
+  font-size: 1.2vw;
   justify-content: space-between;
 `;
 
 const ExplanationButton = styled.button`
   border-radius: 1rem;
-  border: 1px solid #907AE7;
-  background: #907AE7;
+  border: 1px solid #907ae7;
+  background: #907ae7;
   cursor: pointer;
   padding: 12px;
   color: #fff;
@@ -269,22 +489,22 @@ const ExplanationButton = styled.button`
   font-size: 1vw;
   font-weight: 500;
   height: 0%;
-  
+
   @media screen and (max-width: 768px) {
-    padding:2px 0;
-    margin-top:16px;
-    width:40%;
-    font-size: 0.8vw;
+    padding: 10px;
+    font-size: 3vw;
   }
 `;
 
 const ExplanationP = styled.p`
-
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
-const ColoredText = styled.p`
-  color: #8f7ce0;
-}`;
-
+const ColoredText = styled.span`
+  color: #907ae7;
+  font-weight: bold;
+`;
 
 export default VideoPurchase;
