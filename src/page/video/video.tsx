@@ -175,6 +175,7 @@ const DivVideo = styled.div`
 const VideoA = styled.a`
   font-size: 0.8vw;
   color: #eee;
+  margin:5px 0;
 `;
 
 const VideoH3 = styled.h3`
@@ -188,20 +189,15 @@ const VideoP = styled.p`
   font-size: 0.8vw;
   color: #aeaeae;
 `;
-const UserImage = styled.img`
-  width: 40px;
-  height: 40px;
-  margin: 15px auto;
-  border-radius: 50%;
-`;
+
 
 const Videoss = styled.div`
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 90%;
   text-align: left;
   justify-content: space-between;
-  margin: 0 auto;
+  margin: 0px auto;
 `;
 
 const VidesoDiv = styled.div`

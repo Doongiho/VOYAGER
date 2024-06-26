@@ -233,8 +233,7 @@ const VideoPurchase: React.FC = () => {
                   </ExplanationP>
                 </ExplanationLi2>
                 <ExplanationLi3>
-                  <ExplanationP>{video.price}₩</ExplanationP>
-                  <CheckoutForm
+                <CheckoutForm
                     amount={video.price}
                     onSuccess={handlePaymentSuccess}
                   />
@@ -244,6 +243,9 @@ const VideoPurchase: React.FC = () => {
                     </StyledButton>
                   )}
                 </ExplanationLi3>
+                <ExplanationLi4>
+                  <ExplanationP>{video.price}₩</ExplanationP>
+                </ExplanationLi4>
               </ExplanationUl>
             </ExplanationDiv>
           </Div>
@@ -267,6 +269,7 @@ const StyledCardElement = styled(CardElement)`
   border-radius: 4px;
   border: 1px solid #ccc;
   margin-bottom: 20px;
+  
 `;
 
 const StyledButton = styled.button`
@@ -276,7 +279,7 @@ const StyledButton = styled.button`
   border-radius: 4px;
   padding: 10px 20px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1vw;
   transition: background-color 0.3s;
 
   &:disabled {
@@ -288,11 +291,13 @@ const StyledButton = styled.button`
 const ErrorMessage = styled.div`
   color: red;
   margin-top: 20px;
+  font-size:1vw;
 `;
 
 const SuccessMessage = styled.div`
   color: green;
   margin-top: 20px;
+  font-size:1vw;
 `;
 
 const VideoDiv = styled.div`
@@ -396,7 +401,7 @@ const VideoA = styled.a`
 `;
 
 const VideoH3 = styled.h3`
-  font-size: 1.1vw;
+  font-size: 1vw;
   margin-top: 12px;
   margin-bottom: 0px;
   color: #fff;
@@ -460,7 +465,7 @@ const ExplanationLi2 = styled.li`
   list-style-type: none;
   padding: 30px 20px 15px 20px;
   display: flex;
-  font-size: 1.2vw;
+  font-size: 1vw;
   justify-content: space-between;
   margin-bottom: 82px;
 
@@ -478,6 +483,15 @@ const ExplanationLi3 = styled.li`
   justify-content: space-between;
 `;
 
+const ExplanationLi4 = styled.li`
+  list-style-type: none;
+  padding: 20px 20px 0px 20px;
+  display: flex;
+  font-size: 1.2vw;
+  justify-content: space-between;
+  float: right;
+`;
+
 const ExplanationButton = styled.button`
   border-radius: 1rem;
   border: 1px solid #907ae7;
@@ -492,19 +506,18 @@ const ExplanationButton = styled.button`
 
   @media screen and (max-width: 768px) {
     padding: 10px;
-    font-size: 3vw;
   }
 `;
 
 const ExplanationP = styled.p`
   @media screen and (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 1vw;
   }
 `;
 
 const ColoredText = styled.span`
   color: #907ae7;
-  font-weight: bold;
+  font-weight: 600;
 `;
 
 export default VideoPurchase;

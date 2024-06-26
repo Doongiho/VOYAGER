@@ -215,12 +215,13 @@ const MyPageLis = styled.li`
 const ErrorMessage = styled.p`
   color: red;
   font-size: 0.8vw;
+  margin-top: 10px;
 `;
 
 const Message = styled.p`
   text-align: left;
   color: green;
-  margin: 0px;
+  margin-top: 10px;
   font-size: 0.8vw;
 `;
 
