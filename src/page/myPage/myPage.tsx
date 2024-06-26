@@ -8,10 +8,13 @@ interface IFormInput {
 }
 
 const MyPage: React.FC = () => {
-  const userDataString = localStorage.getItem('userData');
-  const userData = userDataString ? JSON.parse(userDataString) : null;
-  const twitterImage = userData ? userData.twitterImage : '';
-
+  const loggedInUserEmail = localStorage.getItem('loggedInUser');
+  const allUsersDataString = localStorage.getItem('userData');
+  const allUsersData = allUsersDataString ? JSON.parse(allUsersDataString) : [];
+  const userData = allUsersData.find(
+    (user: any) => user.email === loggedInUserEmail
+  );
+  const twitterImage = userData ? userData.twitterImage : ''
   const { register, handleSubmit, formState: { errors }, reset } = useForm<IFormInput>();
   const [editingProfileImage, setEditingProfileImage] = useState(false);
   const [profileImage, setProfileImage] = useState(twitterImage);
@@ -25,7 +28,10 @@ const MyPage: React.FC = () => {
       setEditingProfileImage(false);
       if (userData) {
         const updatedUserData = { ...userData, twitterImage: newImageUrl.toString() };
-        localStorage.setItem('userData', JSON.stringify(updatedUserData));
+        const updatedAllUsersData = allUsersData.map((user: any) =>
+          user.email === loggedInUserEmail ? updatedUserData : user
+        );
+        localStorage.setItem('userData', JSON.stringify(updatedAllUsersData));
       }
     }
   };
@@ -39,7 +45,10 @@ const MyPage: React.FC = () => {
     }
 
     const updatedUserData = { ...userData, password: data.newPassword };
-    localStorage.setItem('userData', JSON.stringify(updatedUserData));
+    const updatedAllUsersData = allUsersData.map((user: any) =>
+      user.email === loggedInUserEmail ? updatedUserData : user
+    );
+    localStorage.setItem('userData', JSON.stringify(updatedAllUsersData));
     setMessage('비밀번호가 성공적으로 변경되었습니다.');
     reset();
     setShowPasswordFields(false);
