@@ -28,3 +28,5 @@ refactor	코드 리팩토링<br>
 <h3>디자인</h3>
 [Untitled.pdf](https://github.com/user-attachments/files/15988266/Untitled.pdf)
 
+<p>주의사항</p>
+백 없이 로컬스토리지를 사용하여 만들었기 때문에 동영상이 저장되지 못합니다. 
