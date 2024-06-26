@@ -15,18 +15,21 @@ interface VideoUploadProps {
 const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
   const { register, handleSubmit, reset, setValue, formState: { isValid, errors } } = useForm<IVideo>();
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
-  const [videoFile, setVideoFile] = useState<File | Blob | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [videoFile, setVideoFile] = useState<File | null>(null);
   const navigate = useNavigate();
-  const userDataString = localStorage.getItem('userData');
-  const userData = userDataString ? JSON.parse(userDataString) : null;
+  const loggedInUserEmail = localStorage.getItem('loggedInUser');
+  const allUsersDataString = localStorage.getItem('userData');
+  const allUsersData = allUsersDataString ? JSON.parse(allUsersDataString) : [];
+  const userData = allUsersData.find(
+    (user: any) => user.email === loggedInUserEmail
+  );
 
-  const onSubmit: SubmitHandler<IVideo> = data => {
+  const onSubmit: SubmitHandler<IVideo> = (data) => {
     const formData: IVideo = {
       ...data,
       videoFile: videoFile,
-      id: userData.id,
       username: userData.username,
+      useremail: userData.email,
       twitterImage: userData.twitterImage,
       videoStr: Math.random().toString(36).substring(7),
     };
@@ -40,11 +43,6 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onAddVideo }) => {
     setVideoUrl(null);
     setVideoFile(null);
     navigate('/videoSales');
-  };
-
-
-  const handleImageClick = () => {
-    fileInputRef.current?.click();
   };
 
   const handleFileChange = (file: File) => {
@@ -298,21 +296,6 @@ const DivVideo = styled.div`
   @media screen and (max-width: 768px) {
     position: relative;
   }
-`;
-
-const UploadImage = styled.img`
-  width: 80%;
-  margin: 2vw auto;
-  border-radius: 50%;
-  cursor: pointer;
-`;
-
-const UploadDiv = styled.div`
-  display:flex;
-`;
-
-const HiddenFileInput = styled.input`
-  display: none;
 `;
 
 const ExplanationUl = styled.ul`
