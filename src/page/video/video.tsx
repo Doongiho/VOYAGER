@@ -8,7 +8,10 @@ const Video: React.FC<VideoSalesProps> = ({ videos }) => {
   const navigate = useNavigate();
   const [filteredVideoSales, setFilteredVideoSales] = useState<IVideo[]>([]);
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [currentUser, setCurrentUser] = useState<{ username: string; profileImage: string | null } | null>(null);
+  const [currentUser, setCurrentUser] = useState<{
+    username: string;
+    profileImage: string | null;
+  } | null>(null);
 
   useEffect(() => {
     if (videos) {
@@ -18,7 +21,10 @@ const Video: React.FC<VideoSalesProps> = ({ videos }) => {
     const storedUserData = localStorage.getItem('userData');
     if (storedUserData) {
       const userData = JSON.parse(storedUserData);
-      setCurrentUser({ username: userData.username, profileImage: userData.twitterImage });
+      setCurrentUser({
+        username: userData.username,
+        profileImage: userData.twitterImage,
+      });
     }
   }, [videos]);
 
@@ -44,7 +50,7 @@ const Video: React.FC<VideoSalesProps> = ({ videos }) => {
       <VideoDiv>
         <Videoh1>원하는 동영상을 검색해보세요.</Videoh1>
         <Input
-          placeholder="검색어를 입력하세요"
+          placeholder='검색어를 입력하세요'
           value={searchTerm}
           onChange={handleSearchChange}
         />
@@ -57,123 +63,6 @@ const Video: React.FC<VideoSalesProps> = ({ videos }) => {
                 )}
               </DivVideo>
               <VidesoDiv>
-                {currentUser && currentUser.username === video.username && currentUser.profileImage && (
-                  <UserImage src={currentUser.profileImage} alt="프로필 이미지" />
-                )}
-                <Videoss>
-                  <VideoH3>{video.title}</VideoH3>
-                  <VideoA>{video.username}</VideoA>
-                  <VideoP>{video.explanation}</VideoP>
-                </Videoss>
-              </VidesoDiv>
-            </ServiceLi>
-          ))}
-           {filteredVideoSales.map((video: IVideo, index: number) => (
-            <ServiceLi key={index} onClick={() => handleVideoClick(video)}>
-              <DivVideo>
-                {video.videoFile && video.videoFile instanceof Blob && (
-                  <VideoThumbnail src={URL.createObjectURL(video.videoFile)} />
-                )}
-              </DivVideo>
-              <VidesoDiv>
-                {currentUser && currentUser.username === video.username && currentUser.profileImage && (
-                  <UserImage src={currentUser.profileImage} alt="프로필 이미지" />
-                )}
-                <Videoss>
-                  <VideoH3>{video.title}</VideoH3>
-                  <VideoA>{video.username}</VideoA>
-                  <VideoP>{video.explanation}</VideoP>
-                </Videoss>
-              </VidesoDiv>
-            </ServiceLi>
-          ))}
-           {filteredVideoSales.map((video: IVideo, index: number) => (
-            <ServiceLi key={index} onClick={() => handleVideoClick(video)}>
-              <DivVideo>
-                {video.videoFile && video.videoFile instanceof Blob && (
-                  <VideoThumbnail src={URL.createObjectURL(video.videoFile)} />
-                )}
-              </DivVideo>
-              <VidesoDiv>
-                {currentUser && currentUser.username === video.username && currentUser.profileImage && (
-                  <UserImage src={currentUser.profileImage} alt="프로필 이미지" />
-                )}
-                <Videoss>
-                  <VideoH3>{video.title}</VideoH3>
-                  <VideoA>{video.username}</VideoA>
-                  <VideoP>{video.explanation}</VideoP>
-                </Videoss>
-              </VidesoDiv>
-            </ServiceLi>
-          ))}
-           {filteredVideoSales.map((video: IVideo, index: number) => (
-            <ServiceLi key={index} onClick={() => handleVideoClick(video)}>
-              <DivVideo>
-                {video.videoFile && video.videoFile instanceof Blob && (
-                  <VideoThumbnail src={URL.createObjectURL(video.videoFile)} />
-                )}
-              </DivVideo>
-              <VidesoDiv>
-                {currentUser && currentUser.username === video.username && currentUser.profileImage && (
-                  <UserImage src={currentUser.profileImage} alt="프로필 이미지" />
-                )}
-                <Videoss>
-                  <VideoH3>{video.title}</VideoH3>
-                  <VideoA>{video.username}</VideoA>
-                  <VideoP>{video.explanation}</VideoP>
-                </Videoss>
-              </VidesoDiv>
-            </ServiceLi>
-          ))}
-           {filteredVideoSales.map((video: IVideo, index: number) => (
-            <ServiceLi key={index} onClick={() => handleVideoClick(video)}>
-              <DivVideo>
-                {video.videoFile && video.videoFile instanceof Blob && (
-                  <VideoThumbnail src={URL.createObjectURL(video.videoFile)} />
-                )}
-              </DivVideo>
-              <VidesoDiv>
-                {currentUser && currentUser.username === video.username && currentUser.profileImage && (
-                  <UserImage src={currentUser.profileImage} alt="프로필 이미지" />
-                )}
-                <Videoss>
-                  <VideoH3>{video.title}</VideoH3>
-                  <VideoA>{video.username}</VideoA>
-                  <VideoP>{video.explanation}</VideoP>
-                </Videoss>
-              </VidesoDiv>
-            </ServiceLi>
-          ))}
-           {filteredVideoSales.map((video: IVideo, index: number) => (
-            <ServiceLi key={index} onClick={() => handleVideoClick(video)}>
-              <DivVideo>
-                {video.videoFile && video.videoFile instanceof Blob && (
-                  <VideoThumbnail src={URL.createObjectURL(video.videoFile)} />
-                )}
-              </DivVideo>
-              <VidesoDiv>
-                {currentUser && currentUser.username === video.username && currentUser.profileImage && (
-                  <UserImage src={currentUser.profileImage} alt="프로필 이미지" />
-                )}
-                <Videoss>
-                  <VideoH3>{video.title}</VideoH3>
-                  <VideoA>{video.username}</VideoA>
-                  <VideoP>{video.explanation}</VideoP>
-                </Videoss>
-              </VidesoDiv>
-            </ServiceLi>
-          ))}
-           {filteredVideoSales.map((video: IVideo, index: number) => (
-            <ServiceLi key={index} onClick={() => handleVideoClick(video)}>
-              <DivVideo>
-                {video.videoFile && video.videoFile instanceof Blob && (
-                  <VideoThumbnail src={URL.createObjectURL(video.videoFile)} />
-                )}
-              </DivVideo>
-              <VidesoDiv>
-                {currentUser && currentUser.username === video.username && currentUser.profileImage && (
-                  <UserImage src={currentUser.profileImage} alt="프로필 이미지" />
-                )}
                 <Videoss>
                   <VideoH3>{video.title}</VideoH3>
                   <VideoA>{video.username}</VideoA>
@@ -207,7 +96,7 @@ const VideoContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding-top: 1vh;;
+  padding-top: 1vh;
   text-align: center;
   position: relative;
   padding-bottom: 50px;
@@ -223,7 +112,7 @@ const VideoThumbnail = styled.video`
 `;
 
 const Videoh1 = styled.h1`
-  font-size:2vw;
+  font-size: 2vw;
 `;
 
 const Input = styled.input`
@@ -234,19 +123,18 @@ const Input = styled.input`
   cursor: pointer;
   box-shadow: 2px 2px 2px #b2b2b2;
   width: 40vw;
-  height:0.6vw;
-  margin:20px 0;
+  height: 0.6vw;
+  margin: 20px 0;
   line-height: 24px;
   border-radius: 1rem;
-  font-size:1vw;
+  font-size: 1vw;
   padding: 0.8vw 1.7vw 0.8vw 3vw;
 
   &:focus {
-      outline: none;
-      border-color: #3b393973;
+    outline: none;
+    border-color: #3b393973;
   }
 `;
-
 
 const ServiceUl = styled.ul`
   display: flex;
@@ -256,14 +144,13 @@ const ServiceUl = styled.ul`
   width: 100%;
   padding: 0px;
   justify-content: flex-start;
-  margin-top:90px;
-  
+  margin-top: 90px;
+
   @media screen and (max-width: 768px) {
     justify-content: center;
-    margin:0px;
+    margin: 0px;
   }
 `;
-
 
 const ServiceLi = styled.li`
   width: 340px;
@@ -272,7 +159,7 @@ const ServiceLi = styled.li`
   margin: 30px 44px 0 0;
 
   @media screen and (max-width: 768px) {
-    margin:50px 0px;
+    margin: 50px 0px;
   }
 `;
 
@@ -286,15 +173,15 @@ const DivVideo = styled.div`
 `;
 
 const VideoA = styled.a`
-  font-size:0.8vw;
-  color:#eee;
+  font-size: 0.8vw;
+  color: #eee;
 `;
 
 const VideoH3 = styled.h3`
   font-size: 1vw;
   margin-top: 12px;
   margin-bottom: 0px;
-  color:#fff;
+  color: #fff;
 `;
 
 const VideoP = styled.p`
@@ -309,7 +196,7 @@ const UserImage = styled.img`
 `;
 
 const Videoss = styled.div`
-  display:flex;
+  display: flex;
   flex-direction: column;
   width: 80%;
   text-align: left;
@@ -318,10 +205,9 @@ const Videoss = styled.div`
 `;
 
 const VidesoDiv = styled.div`
-  display:flex;
-  width:100%;
+  display: flex;
+  width: 100%;
   justify-content: normal;
 `;
-
 
 export default Video;
