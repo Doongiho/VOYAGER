@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{ useEffect} from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IVideo } from '../../types/IVideo';
@@ -17,14 +17,27 @@ const VideoManagement: React.FC = () => {
     },
   });
 
-  if (!video) {
-    return <div>비디오 데이터를 찾을 수 없습니다.</div>;
-  }
-
   const onSubmit: SubmitHandler<IVideo> = (data) => {
     const updatedVideo = { ...video, ...data };
-    navigate('/videoSales', { state: { updatedVideo } });
+    const videosFromLocalStorage = localStorage.getItem('videos');
+    let videos = [];
+
+    if (videosFromLocalStorage) {
+      videos = JSON.parse(videosFromLocalStorage);
+    }
+
+    const updatedVideos = videos.map((v: IVideo) => {
+      if (v.videoStr === updatedVideo.videoStr) {
+        return updatedVideo;
+      }
+      return v;
+    });
+
+    localStorage.setItem('videos', JSON.stringify(updatedVideos));
+
+    navigate('/videoSales', { state: { updatedVideos } });
   };
+
 
   return (
     <VideoContainer>
@@ -250,4 +263,5 @@ const ExplanationP1 = styled.p`
   padding: 0px;
   margin-top: 20px; 
 `;
+
 export default VideoManagement;
